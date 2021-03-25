@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 public class MainClass extends Application {
 
     public static void main(String[] args){
-        System.out.println("Hello World");
+        System.out.println("Witam panstwa");
         Application.launch(args);
     }
 
