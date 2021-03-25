@@ -1,0 +1,39 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- //TODO strzelałem, jak nie zadziała to zmieniamy ~W -->
+        <property name = "hibernate.dialect">
+            org.hibernate.dialect.Oracle8iDialect
+        </property>
+
+        <!-- //TODO tak było w internecie, jeśli zadziała to usunąć ten comment ~W-->
+        <property name = "hibernate.connection.driver_class">
+            com.mysql.jdbc.Driver
+        </property>
+
+        <!-- TODO to musimy uzupełnić sami ~W
+
+        <property name = "hibernate.connection.url">
+            jdbc:mysql://localhost/test //TODO tu nie będzie mysql w ścieżce ~W
+        </property>
+
+        <property name = "hibernate.connection.username">
+            admin
+        </property>
+
+        <property name = "hibernate.connection.password">
+            admin123
+        </property>
+
+        -->
+
+        <!--//TODO po utworzeniu mappingów podlinkować je tutaj ~W
+        List of XML mapping files, for example:
+        <mapping resource = "Employee.hbm.xml"/>
+        -->
+
+    </session-factory>
+</hibernate-configuration>
