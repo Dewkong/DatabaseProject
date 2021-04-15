@@ -1,4 +1,4 @@
-# DatabaseProject
+# Projekt Bazy Danych AGH semestr 4
 
 Krystian Walat  
 Marcin Pałczak  
