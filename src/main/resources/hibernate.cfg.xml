@@ -3,32 +3,13 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.Oracle8iDialect</property>
+        <property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
+        <property name="hibernate.connection.url">jdbc:oracle:thin:@dbmanage.lab.ki.agh.edu.pl:1521:DBMANAGE</property>
+        <property name="hibernate.connection.username">BD_PALCZAK</property>
+        <property name="hibernate.connection.password">GrzcbenelCnffjbeq123</property>
 
-        <!-- //TODO strzelałem, jak nie zadziała to zmieniamy ~W -->
-        <property name = "hibernate.dialect">
-            org.hibernate.dialect.Oracle8iDialect
-        </property>
-
-        <!-- //TODO tak było w internecie, jeśli zadziała to usunąć ten comment ~W-->
-        <property name = "hibernate.connection.driver_class">
-            com.mysql.jdbc.Driver
-        </property>
-
-        <!-- TODO to musimy uzupełnić sami ~W
-
-        <property name = "hibernate.connection.url">
-            jdbc:mysql://localhost/test //TODO tu nie będzie mysql w ścieżce ~W
-        </property>
-
-        <property name = "hibernate.connection.username">
-            admin
-        </property>
-
-        <property name = "hibernate.connection.password">
-            admin123
-        </property>
-
-        -->
+        <property name="hibernate.current_session_context_class">thread</property>
 
         <!--//TODO po utworzeniu mappingów podlinkować je tutaj ~W
         List of XML mapping files, for example:
