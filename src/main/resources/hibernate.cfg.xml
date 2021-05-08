@@ -8,13 +8,18 @@
         <property name="hibernate.connection.url">jdbc:oracle:thin:@dbmanage.lab.ki.agh.edu.pl:1521:DBMANAGE</property>
         <property name="hibernate.connection.username">BD_PALCZAK</property>
         <property name="hibernate.connection.password">GrzcbenelCnffjbeq123</property>
+        <property name="hibernate.show_sql">true</property>
+        <!-- TODO na razie niszczymy bazę przy każdym uruchomieniu, ostatecznie trzeba zmienić create na update ~W -->
+        <property name="hibernate.hbm2ddl.auto">create</property>
+
 
         <property name="hibernate.current_session_context_class">thread</property>
 
-        <!--//TODO po utworzeniu mappingów podlinkować je tutaj ~W
-        List of XML mapping files, for example:
-        <mapping resource = "Employee.hbm.xml"/>
-        -->
+        <mapping class = "agh.cs.projekt.models.Tour"/>
+        <mapping class = "agh.cs.projekt.models.Customer"/>
+        <mapping class = "agh.cs.projekt.models.Rating"/>
+        <mapping class = "agh.cs.projekt.models.Reservation"/>
+        <mapping class = "agh.cs.projekt.models.Payment"/>
 
     </session-factory>
 </hibernate-configuration>
