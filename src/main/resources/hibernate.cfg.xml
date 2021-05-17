@@ -15,6 +15,9 @@
 
         <property name="hibernate.current_session_context_class">thread</property>
 
+        <mapping class = "agh.cs.projekt.models.ImageSource.ImageSource"/>
+        <mapping class = "agh.cs.projekt.models.ImageSource.LocalImageSource"/>
+        <mapping class = "agh.cs.projekt.models.ImageSource.HttpImageSource"/>
         <mapping class = "agh.cs.projekt.models.Tour"/>
         <mapping class = "agh.cs.projekt.models.Customer"/>
         <mapping class = "agh.cs.projekt.models.Rating"/>

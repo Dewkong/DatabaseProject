@@ -1,6 +1,8 @@
 package agh.cs.projekt;
 
+import agh.cs.projekt.models.ImageSource.*;
 import agh.cs.projekt.models.*;
+import agh.cs.projekt.utils.ImageController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,7 +11,6 @@ import javafx.stage.Stage;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import java.sql.Date;
@@ -40,7 +41,9 @@ public class MainClass extends Application {
         try (Session session = sessionFactory.getCurrentSession()) {
             session.beginTransaction();
 
-            Tour t1 = new Tour("Wycieczka testowa", CountryEnum.POLAND, new Date(System.currentTimeMillis()), 10, 70.0f, "Lorem Ipsum dolor sit amet");
+            ImageSource testImg = new LocalImageSource("/test-img.jpg");
+            session.save(testImg);
+            Tour t1 = new Tour("Wycieczka testowa", CountryEnum.POLAND, new Date(System.currentTimeMillis()), 10, 70.0f, "Lorem Ipsum dolor sit amet", testImg);
             session.save(t1);
             Customer c1 = new Customer("Jan", "Kowalski", "123456789", "test@example.com");
             session.save(c1);
@@ -72,6 +75,13 @@ public class MainClass extends Application {
         //
         //javafx window initialisation:
         //
+
+        //this must be done before a call to FXMLLoader.load
+        //for now it's filled with example images
+        ImageController.init(
+                new HttpImageSource("https://www.elegantthemes.com/blog/wp-content/uploads/2020/08/000-http-error-codes.png"),
+                new HttpImageSource("https://forum.bubble.io/uploads/default/original/3X/f/1/f1777bc40411988af0a87383e5f2fbde9c76ba9f.png")
+        );
 
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/scene.fxml"));
 

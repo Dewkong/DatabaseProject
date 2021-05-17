@@ -1,10 +1,11 @@
 package agh.cs.projekt.models;
 
+import agh.cs.projekt.models.ImageSource.ImageSource;
+
 import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Embeddable
 public class Tour {
 
     @Id
@@ -28,17 +29,21 @@ public class Tour {
     @Column(nullable = false)
     private String description;
 
+    @ManyToOne
+    private ImageSource image;
+
     Tour(){
         //required by Hibernate
     }
 
-    public Tour(String name, CountryEnum country, Date date, int maxPlaces, float price, String description) {
+    public Tour(String name, CountryEnum country, Date date, int maxPlaces, float price, String description, ImageSource image) {
         this.name = name;
         this.country = country;
         this.tourDate = date;
         this.maxPlaces = maxPlaces;
         this.price = price;
         this.description = description;
+        this.image = image;
     }
 
     public int getId() {
