@@ -98,6 +98,14 @@ public class Tour {
         this.description = description;
     }
 
+    public ImageSource getImage() {
+        return image;
+    }
+
+    public void setImage(ImageSource image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
         return "Tour{" +

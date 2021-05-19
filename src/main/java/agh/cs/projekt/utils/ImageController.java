@@ -94,7 +94,7 @@ public class ImageController {
             Image i;
             try {
                 i = SwingFXUtils.toFXImage(ImageIO.read(url), null);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 System.err.println("Failed to load ImageSource");
                 e.printStackTrace();
                 i = error_img;
