@@ -26,6 +26,8 @@ public class MainClass extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        /*
+
         //
         //database initialisation + sample query:
         //
@@ -72,6 +74,14 @@ public class MainClass extends Application {
         }
 
 
+        */
+
+        //establishing database connection for the first time
+        //which means initializing DatabaseHolder
+        DatabaseHolder databaseHolder = DatabaseHolder.getInstance();
+        //initializing UserHolder
+        UserHolder userHolder = UserHolder.getInstance();
+
         //
         //javafx window initialisation:
         //
@@ -83,9 +93,10 @@ public class MainClass extends Application {
                 new HttpImageSource("https://forum.bubble.io/uploads/default/original/3X/f/1/f1777bc40411988af0a87383e5f2fbde9c76ba9f.png")
         );
 
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/scene.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/login_screen.fxml"));
 
         Scene scene = new Scene(root);
+
         scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
 
         primaryStage.setTitle("JavaFX and Gradle");
