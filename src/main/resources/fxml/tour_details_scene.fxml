@@ -9,6 +9,11 @@
     <children>
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.hgrow="NEVER">
          <children>
+            <Button fx:id="return_button" mnemonicParsing="false" onAction="#goBack" text="Powrót">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </Button>
                 <ImageView fx:id="image_view" fitHeight="200.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
                <viewport>
                   <Rectangle2D />
@@ -35,6 +40,12 @@
                      <children>
                          <Label text="Opis: " />
                          <Label fx:id="tour_description" text="DESCRIPTION" wrapText="true" />
+                     </children>
+                 </HBox>
+                 <HBox>
+                     <children>
+                         <Label text="Wolne miejsca: " />
+                         <Label fx:id="tour_places" text="PLACES" wrapText="true" />
                      </children>
                  </HBox>
                  <HBox>

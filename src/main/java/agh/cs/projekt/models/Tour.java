@@ -1,9 +1,14 @@
 package agh.cs.projekt.models;
 
+import agh.cs.projekt.DatabaseHolder;
 import agh.cs.projekt.models.ImageSource.ImageSource;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 public class Tour {
@@ -104,6 +109,26 @@ public class Tour {
 
     public void setImage(ImageSource image) {
         this.image = image;
+    }
+
+    public int getAvailablePlaces(){ //returns a negative number on error
+        try(Session session = DatabaseHolder.getInstance().getSession()) {
+            Transaction transaction = session.beginTransaction();
+
+            Query<Reservation> query = session.createQuery("from Reservation where tour = :tour", Reservation.class).setParameter("tour", this);
+            List<Reservation> reservations = query.getResultList();
+            int reservedPlaces = 0;
+            for (Reservation r : reservations){
+                reservedPlaces += r.getReservedAmount();
+            }
+
+            transaction.commit();
+            return maxPlaces - reservedPlaces;
+        } catch (Exception e){
+            System.err.println("Error when fetching number of places");
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     @Override

@@ -71,6 +71,11 @@ public class Reservation {
         isCanceled = canceled;
     }
 
+    //may seem useless, but is more in line with OOP
+    public int getReservedAmount(){
+        return 1;
+    }
+
     @Override
     public String toString() {
         return "Reservation{" +
