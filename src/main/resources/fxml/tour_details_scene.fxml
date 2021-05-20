@@ -7,7 +7,7 @@
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.cs.projekt.ui.FXMLTourDetailsController">
     <children>
-      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.hgrow="NEVER">
+      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #dddddd;" GridPane.hgrow="NEVER">
          <children>
             <Button fx:id="return_button" mnemonicParsing="false" onAction="#goBack" text="Powrót">
                <VBox.margin>
@@ -54,6 +54,38 @@
                          <Label fx:id="tour_price" text="PRICE" wrapText="true" />
                      </children>
                  </HBox>
+         </children>
+      </VBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+         <children>
+            <Label fx:id="customer_loading" text="Ładowanie...">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </Label>
+            <HBox fx:id="hbox_customer_reservations">
+               <children>
+                  <Label text="Twoje rezerwacje: " />
+                  <Label fx:id="customer_reservations" text="CUSTOMER_RESERVATIONS" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox fx:id="hbox_reservation_controls" alignment="TOP_RIGHT" layoutX="10.0" layoutY="28.0">
+               <children>
+                  <Button fx:id="button_make_reservation" mnemonicParsing="false" onAction="#makeReservation" text="Zarezerwuj miejsce">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="button_cancel_reservation" layoutX="15.0" layoutY="15.0" mnemonicParsing="false" onAction="#cancelReservation" text="Anuluj rezerwację">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
          </children>
       </VBox>
     </children>

@@ -28,6 +28,13 @@ public class Reservation {
         //required by Hibernate
     }
 
+    public Reservation(Customer customer, Tour tour) {
+        this.customer = customer;
+        this.tour = tour;
+        this.reservationDate = new Date(System.currentTimeMillis());
+        this.isCanceled = false;
+    }
+
     public Reservation(Customer customer, Tour tour, Date reservationDate, boolean isCanceled) {
         this.customer = customer;
         this.tour = tour;
