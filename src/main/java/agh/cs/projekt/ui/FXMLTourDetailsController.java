@@ -102,8 +102,7 @@ public class FXMLTourDetailsController implements Initializable {
 
     //button callback
     public void goBack(ActionEvent actionEvent) throws IOException {
-        //TODO this should not redirect to login, just a placeholder for now ~W
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/login_screen.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/tours_screen.fxml"));
         return_button.getScene().setRoot(root);
     }
 

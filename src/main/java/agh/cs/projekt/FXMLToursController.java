@@ -3,6 +3,7 @@ package agh.cs.projekt;
 import agh.cs.projekt.models.ApplicationUser;
 import agh.cs.projekt.models.RoleEnum;
 import agh.cs.projekt.models.Tour;
+import agh.cs.projekt.ui.FXMLTourDetailsController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -99,13 +100,18 @@ public class FXMLToursController implements Initializable {
                 }
 
                 Button detailsButton = new Button("Wiecej");
-                EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
-                    public void handle(ActionEvent e)
-                    {
-                        System.out.println("TODO details : from tour ID " + tour.getId());
+                detailsButton.setOnAction(e -> {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/tour_details_scene.fxml"));
+                        Parent root = loader.load();
+                        FXMLTourDetailsController controller = loader.getController();
+                        controller.displayTour(tour);
+                        logoutButton.getScene().setRoot(root);
+                    } catch (IOException ioException) {
+                        //TODO show some alert signaling the error ~W
+                        new IOException("Error in FXML loader", ioException).printStackTrace();
                     }
-                };
-                detailsButton.setOnAction(event);
+                });
 
                 HBox detailsBox = new HBox(detailsButton);
                 detailsBox.setAlignment(Pos.CENTER);
