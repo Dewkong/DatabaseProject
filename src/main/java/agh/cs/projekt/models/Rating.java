@@ -25,12 +25,14 @@ public class Rating implements Serializable { //Hibernate requires implementatio
 
     public Rating() {
         //required by Hibernate
+        this.ratingID = new RatingID();
     }
 
     public Rating(Customer customer, Tour tour, int rating) {
         this.customer = customer;
         this.tour = tour;
         this.rating = rating;
+        this.ratingID = new RatingID();
     }
 
     public Customer getCustomer() {
