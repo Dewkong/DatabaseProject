@@ -143,7 +143,7 @@ public class FXMLTourDetailsController implements Initializable {
 
         new Thread(() -> {
             try {
-                Reservation reservation = customer.removeLatestReservation(tour);
+                Reservation reservation = customer.cancelLatestReservation(tour);
                 if (reservation != null){
                     //reservation successful, refresh the ui with most recent data (in case there were changes)
                     Platform.runLater(() -> {

@@ -76,7 +76,8 @@ public class Customer implements Serializable {
         this.email = email;
     }
 
-    public int getReservationsForTour(Tour tour){ //returns a negative number on error
+    //returns the non-canceled reserved places on a tour, or a negative number on error
+    public int getReservationsForTour(Tour tour){
         try(Session session = DatabaseHolder.getInstance().getSession()) {
             Transaction transaction = session.beginTransaction();
 
@@ -126,19 +127,20 @@ public class Customer implements Serializable {
         }
     }
 
-    //returns the removed reservation
-    public Reservation removeLatestReservation(Tour tour) throws Exception {
+    //returns the canceled reservation
+    public Reservation cancelLatestReservation(Tour tour) throws Exception {
         try(Session session = DatabaseHolder.getInstance().getSession()){
             Transaction transaction = session.beginTransaction();
 
-            Query<Reservation> query = session.createQuery("from Reservation where tour = :tour order by reservationDate", Reservation.class).setParameter("tour", tour);
+            Query<Reservation> query = session.createQuery("from Reservation where tour = :tour order by reservationDate desc", Reservation.class).setParameter("tour", tour);
             List<Reservation> reservations = query.getResultList();
             if (reservations.size() == 0){
                 transaction.rollback();
                 throw new RuntimeException("No reservations to cancel");
             } else {
                 Reservation latest = reservations.get(0);
-                session.remove(latest);
+                latest.setCanceled(true);
+                session.save(latest);
                 transaction.commit();
                 return latest;
             }
