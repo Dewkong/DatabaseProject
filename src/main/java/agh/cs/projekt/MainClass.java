@@ -2,7 +2,6 @@ package agh.cs.projekt;
 
 import agh.cs.projekt.models.ImageSource.*;
 import agh.cs.projekt.models.*;
-import agh.cs.projekt.ui.FXMLTourDetailsController;
 import agh.cs.projekt.utils.ImageController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +26,8 @@ public class MainClass extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        /*
+
         //
         //database initialisation + sample query:
         //
@@ -39,13 +40,12 @@ public class MainClass extends Application {
         SessionFactory sessionFactory = config.buildSessionFactory();
 
         //saving some data
-        Tour t1 = null;
         try (Session session = sessionFactory.getCurrentSession()) {
             session.beginTransaction();
 
             ImageSource testImg = new LocalImageSource("/test-img.jpg");
             session.save(testImg);
-            t1 = new Tour("Wycieczka testowa", CountryEnum.POLAND, new Date(System.currentTimeMillis()), 10, 70.0f, "Lorem Ipsum dolor sit amet", testImg);
+            Tour t1 = new Tour("Wycieczka testowa", CountryEnum.POLAND, new Date(System.currentTimeMillis()), 10, 70.0f, "Lorem Ipsum dolor sit amet", testImg);
             session.save(t1);
             Customer c1 = new Customer("Jan", "Kowalski", "123456789", "test@example.com");
             session.save(c1);
@@ -74,6 +74,14 @@ public class MainClass extends Application {
         }
 
 
+        */
+
+        //establishing database connection for the first time
+        //which means initializing DatabaseHolder
+        DatabaseHolder databaseHolder = DatabaseHolder.getInstance();
+        //initializing UserHolder
+        UserHolder userHolder = UserHolder.getInstance();
+
         //
         //javafx window initialisation:
         //
@@ -85,12 +93,10 @@ public class MainClass extends Application {
                 new HttpImageSource("https://forum.bubble.io/uploads/default/original/3X/f/1/f1777bc40411988af0a87383e5f2fbde9c76ba9f.png")
         );
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/tour_details_scene.fxml"));
-        Parent root = loader.load();
-        FXMLTourDetailsController controller = loader.getController();
-        controller.displayTour(t1);
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/login_screen.fxml"));
 
         Scene scene = new Scene(root);
+
         scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
 
         primaryStage.setTitle("JavaFX and Gradle");

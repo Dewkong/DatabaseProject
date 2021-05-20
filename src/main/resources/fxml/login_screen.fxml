@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.cs.projekt.FXMLLoginController">
+     <GridPane alignment="CENTER" prefHeight="240.0" prefWidth="640.0">
+         <columnConstraints>
+             <ColumnConstraints prefWidth="160.0" />
+             <ColumnConstraints prefWidth="320.0" />
+             <ColumnConstraints prefWidth="160.0" />
+         </columnConstraints>
+             <Label fx:id="title" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+             <Label fx:id="loginLabel" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+             <TextField fx:id="loginTextField" onKeyPressed="#keyPressed" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+             <Label fx:id="passwordLabel" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+             <PasswordField fx:id="passwordTextField" onKeyPressed="#keyPressed" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+             <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                 <Button fx:id="loginButton" onAction="#loginPressed"/>
+             </HBox>
+
+             <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                 <Label fx:id="loginStatus" prefHeight="30" />
+             </HBox>
+
+             <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                 <Label fx:id="registerLabel"/>
+             </HBox>
+
+             <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                 <Button fx:id="registerButton" alignment="CENTER_RIGHT" onAction="#register"/>
+             </HBox>
+         <rowConstraints>
+             <RowConstraints prefHeight="40.0"/>
+             <RowConstraints prefHeight="30.0"/>
+             <RowConstraints prefHeight="30.0"/>
+             <RowConstraints prefHeight="30.0"/>
+             <RowConstraints prefHeight="30.0"/>
+             <RowConstraints prefHeight="30.0"/>
+             <RowConstraints prefHeight="30.0"/>
+             <RowConstraints prefHeight="30.0"/>
+             <RowConstraints prefHeight="30.0"/>
+             <RowConstraints prefHeight="30.0"/>
+         </rowConstraints>
+     </GridPane>
+</StackPane>

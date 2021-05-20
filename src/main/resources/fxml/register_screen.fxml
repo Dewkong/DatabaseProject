@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.cs.projekt.FXMLRegisterController">
+    <GridPane alignment="CENTER" prefHeight="240.0" prefWidth="640.0">
+        <columnConstraints>
+            <ColumnConstraints prefWidth="160.0" />
+            <ColumnConstraints prefWidth="320.0" />
+            <ColumnConstraints prefWidth="160.0" />
+        </columnConstraints>
+        <HBox alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <Button fx:id="returnButton" onAction="#goBack" />
+        </HBox>
+
+        <Label fx:id="title" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label fx:id="loginLabel" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <TextField fx:id="loginTextField" onKeyPressed="#keyPressedOnTextField" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+        <Label fx:id="passwordLabel" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <PasswordField fx:id="passwordTextField" onKeyPressed="#keyPressedOnTextField" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+        <Label fx:id="roleLabel" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+        <ChoiceBox fx:id="roleChoiceBox" onKeyPressed="#keyPressedOnChoice" prefWidth="320" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+        <Label fx:id="nameLabel" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+        <TextField fx:id="nameTextField" onKeyPressed="#keyPressedOnTextField" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+
+        <Label fx:id="surnameLabel" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+        <TextField fx:id="surnameTextField" onKeyPressed="#keyPressedOnTextField" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+
+        <Label fx:id="phoneLabel" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+        <TextField fx:id="phoneTextField" onKeyPressed="#keyPressedOnTextField" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+
+        <Label fx:id="emailLabel" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+        <TextField fx:id="emailTextField" onKeyPressed="#keyPressedOnTextField" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+
+        <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="17">
+            <Button fx:id="registerButton" onAction="#registerPressed" />
+        </HBox>
+
+        <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="18">
+            <Text fx:id="registrationStatus"/>
+        </HBox>
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints prefHeight="30.0" />
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
+    </GridPane>
+</StackPane>

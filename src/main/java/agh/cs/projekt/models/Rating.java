@@ -1,22 +1,24 @@
 package agh.cs.projekt.models;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 public class Rating implements Serializable { //Hibernate requires implementation of Serializable to have a composite key here
 
     @EmbeddedId
-    @ManyToOne
-    @JoinColumn(nullable=false)
+    private RatingID ratingID;
+
+    @MapsId("customerID")
+    @ManyToOne(optional = false)
+    @JoinColumns(value = {
+            @JoinColumn(name = "customerID", referencedColumnName = "id") })
     private Customer customer;
 
-    @EmbeddedId
-    @ManyToOne
-    @JoinColumn(nullable=false)
+    @MapsId("tourID")
+    @ManyToOne(optional = false)
+    @JoinColumns(value = {
+            @JoinColumn(name = "tourID", referencedColumnName = "id") })
     private Tour tour;
 
     private int rating;

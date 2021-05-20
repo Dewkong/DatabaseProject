@@ -10,7 +10,7 @@
         <property name="hibernate.connection.password">GrzcbenelCnffjbeq123</property>
         <property name="hibernate.show_sql">true</property>
         <!-- TODO na razie niszczymy bazę przy każdym uruchomieniu, ostatecznie trzeba zmienić create na update ~W -->
-        <property name="hibernate.hbm2ddl.auto">create</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
 
 
         <property name="hibernate.current_session_context_class">thread</property>
@@ -23,6 +23,7 @@
         <mapping class = "agh.cs.projekt.models.Rating"/>
         <mapping class = "agh.cs.projekt.models.Reservation"/>
         <mapping class = "agh.cs.projekt.models.Payment"/>
+        <mapping class = "agh.cs.projekt.models.ApplicationUser"/>
 
     </session-factory>
 </hibernate-configuration>
