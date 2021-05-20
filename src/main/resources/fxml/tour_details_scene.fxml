@@ -7,29 +7,44 @@
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.cs.projekt.ui.FXMLTourDetailsController">
     <children>
-        <VBox prefHeight="400.0" style="-fx-background-color: #eeeeaa;" BorderPane.alignment="CENTER">
-            <children>
-                <ImageView fx:id="image_view" fitHeight="113.0" fitWidth="175.0" pickOnBounds="true" preserveRatio="true" />
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.hgrow="NEVER">
+         <children>
+                <ImageView fx:id="image_view" fitHeight="200.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
+               <viewport>
+                  <Rectangle2D />
+               </viewport></ImageView>
                 <HBox minHeight="0.0">
-                    <children>
+               <children>
                         <Label text="Nazwa wycieczki: " />
-                        <Label fx:id="tour_name" text="NAME" />
-                    </children>
-                    <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                    </VBox.margin>
+                        <Label fx:id="tour_name" text="NAME" wrapText="true" />
+               </children>
                 </HBox>
                 <HBox>
                     <children>
-                        <Label text="Kraj docelowy" />
-                        <Label fx:id="tour_country" text="COUNTRY" />
+                        <Label text="Kraj docelowy: " />
+                        <Label fx:id="tour_country" text="COUNTRY" wrapText="true" />
                     </children>
-                    <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                    </VBox.margin>
                 </HBox>
-            </children>
-        </VBox>
+                 <HBox>
+                     <children>
+                         <Label text="Data: " />
+                         <Label fx:id="tour_date" text="DATE" wrapText="true" />
+                     </children>
+                 </HBox>
+                 <HBox>
+                     <children>
+                         <Label text="Opis: " />
+                         <Label fx:id="tour_description" text="DESCRIPTION" wrapText="true" />
+                     </children>
+                 </HBox>
+                 <HBox>
+                     <children>
+                         <Label text="Cena: " />
+                         <Label fx:id="tour_price" text="PRICE" wrapText="true" />
+                     </children>
+                 </HBox>
+         </children>
+      </VBox>
     </children>
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
