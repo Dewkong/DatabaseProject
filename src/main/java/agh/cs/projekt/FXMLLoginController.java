@@ -86,15 +86,17 @@ public class FXMLLoginController implements Initializable {
                     System.out.println("Dane poprawne. Mozna zalogowac.");
                     UserHolder userHolder = UserHolder.getInstance();
                     userHolder.setUser(user);
-                    Parent root = FXMLLoader.load(getClass().getResource("/fxml/some_scene.fxml"));
+                    session.getTransaction().commit();
+                    Parent root = FXMLLoader.load(getClass().getResource("/fxml/tours_screen.fxml"));
                     loginButton.getScene().setRoot(root);
                 }
                 else {
                     loginStatus.setText("Dane niepoprawne.");
                     loginStatus.setTextFill(Paint.valueOf("red"));
+                    session.getTransaction().commit();
                 }
             }
-            session.getTransaction().commit();
+            //session.getTransaction().commit();
         }
     }
 
