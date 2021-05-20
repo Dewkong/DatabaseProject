@@ -1,6 +1,8 @@
 package agh.cs.projekt;
 
 import agh.cs.projekt.models.ApplicationUser;
+import agh.cs.projekt.models.Tour;
+import agh.cs.projekt.ui.FXMLTourDetailsController;
 import agh.cs.projekt.utils.PasswordUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -86,7 +88,13 @@ public class FXMLLoginController implements Initializable {
                     System.out.println("Dane poprawne. Mozna zalogowac.");
                     UserHolder userHolder = UserHolder.getInstance();
                     userHolder.setUser(user);
-                    Parent root = FXMLLoader.load(getClass().getResource("/fxml/some_scene.fxml"));
+
+                    Tour t1 = session.createQuery("from Tour", Tour.class).getResultList().get(0);
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/tour_details_scene.fxml"));
+                    Parent root = loader.load();
+                    FXMLTourDetailsController controller = loader.getController();
+                    controller.displayTour(t1);
+//                    Parent root = FXMLLoader.load(getClass().getResource("/fxml/some_scene.fxml"));
                     loginButton.getScene().setRoot(root);
                 }
                 else {

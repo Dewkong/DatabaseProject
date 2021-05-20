@@ -92,6 +92,16 @@
                   </Button>
                </children>
             </HBox>
+            <HBox fx:id="hbox_rating_controls" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="64.0">
+               <children>
+                  <Label text="Twoja ocena: ">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <ChoiceBox fx:id="customer_rating" prefWidth="150.0" />
+               </children>
+            </HBox>
          </children>
       </VBox>
     </children>
