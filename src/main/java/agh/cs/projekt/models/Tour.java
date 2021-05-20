@@ -2,6 +2,7 @@ package agh.cs.projekt.models;
 
 import agh.cs.projekt.DatabaseHolder;
 import agh.cs.projekt.models.ImageSource.ImageSource;
+import javafx.util.Pair;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -128,6 +129,25 @@ public class Tour {
             System.err.println("Error when fetching number of places");
             e.printStackTrace();
             return -1;
+        }
+    }
+
+    //returns a pair of (average rating, total ratings), or null in case of error
+    public Pair<Double, Long> getRating(){
+        try(Session session = DatabaseHolder.getInstance().getSession()) {
+            Transaction transaction = session.beginTransaction();
+
+            Long ratingsAmt = session.createQuery("select count(*) from Rating where tour = :tour", Long.class).setParameter("tour", this).getSingleResult();
+            Double average = session.createQuery("select avg(rating) from Rating where tour = :tour", Double.class).setParameter("tour", this).getSingleResult();
+            if (ratingsAmt == null) ratingsAmt = -1L;
+            if (average == null) average = 0.0;
+
+            transaction.commit();
+            return new Pair<>(average, ratingsAmt);
+        } catch (Exception e){
+            System.err.println("Error when fetching number of places");
+            e.printStackTrace();
+            return null;
         }
     }
 

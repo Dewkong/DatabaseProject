@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.URL;
@@ -53,6 +54,8 @@ public class FXMLTourDetailsController implements Initializable {
     public HBox hbox_customer_reservations;
     @FXML
     public HBox hbox_reservation_controls;
+    @FXML
+    public Label tour_rating;
 
     //private caches
     private Tour tour = null;
@@ -79,7 +82,8 @@ public class FXMLTourDetailsController implements Initializable {
         tour_date.setText(sdf.format(tour.getTourDate()));
         tour_price.setText(String.format("%.2f", tour.getPrice()) + "z\u0142"); // \u0142 - unicode for ł
 
-        updateUI();
+        updateReservationsUI();
+        updateRatingsUI();
 
     }
 
@@ -123,7 +127,7 @@ public class FXMLTourDetailsController implements Initializable {
                 //enable closing of the alert dialog
                 Platform.runLater(() -> {
                     //run on FX thread
-                    updateUI();
+                    updateReservationsUI();
                     alert.enableClose();
                 });
             }
@@ -164,7 +168,7 @@ public class FXMLTourDetailsController implements Initializable {
                 //enable closing of the alert dialog
                 Platform.runLater(() -> {
                     //run on FX thread
-                    updateUI();
+                    updateReservationsUI();
                     alert.enableClose();
                 });
             }
@@ -172,7 +176,7 @@ public class FXMLTourDetailsController implements Initializable {
     }
 
     //fetches info about reservation/customer and updates the ui accordingly
-    private void updateUI(){
+    private void updateReservationsUI(){
         customer_loading.setText("\u0141adowanie..."); // \u0141 - unicode for uppercase ł
         customer_loading.setVisible(true);
         customer_loading.setManaged(true);
@@ -190,6 +194,30 @@ public class FXMLTourDetailsController implements Initializable {
                 setCustomerReservedPlaces(reservations);
                 showCustomerInfo();
             });
+        }).start();
+    }
+
+    //fetches info about ratings and updates the ui accordingly
+    private void updateRatingsUI(){
+        tour_rating.setText("\u0141adowanie..."); // \u0141 - unicode for uppercase ł
+
+        new Thread(() -> {
+            //fetch available/reserved places
+
+            Pair<Double, Long> pair = tour.getRating();
+            if (pair != null){
+                double rating = pair.getKey();
+                long ratingsAmt = pair.getValue();
+                Platform.runLater(() -> {
+                    //run on FX thread
+                    setRating(rating, ratingsAmt);
+                });
+            } else {
+                //error
+                Platform.runLater(() -> {
+                    setRating(-1, -1);
+                });
+            }
         }).start();
     }
 
@@ -218,6 +246,17 @@ public class FXMLTourDetailsController implements Initializable {
         } else {
             customer_reservations.setText(String.format("%d", reservedPlaces));
             button_cancel_reservation.setDisable(false);
+        }
+    }
+
+    //must be run on the FX Thread
+    private void setRating(double rating, long ratingsAmt){
+        if (rating < 0 || ratingsAmt < 0){
+            tour_rating.setText("B\u0142\u0105d"); // \u0142 - unicode for ł \u0105 - unicode for ą
+        } else if (ratingsAmt == 0){
+            tour_rating.setText("Brak ocen");
+        } else {
+            tour_rating.setText(String.format("%.2f", rating) + " (ilo\u015B\u0107 ocen: " + ratingsAmt +")");
         }
     }
 

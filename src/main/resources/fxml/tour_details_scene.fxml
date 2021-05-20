@@ -44,6 +44,12 @@
                  </HBox>
                  <HBox>
                      <children>
+                         <Label text="Ocena: " />
+                         <Label fx:id="tour_rating" text="RATING" wrapText="true" />
+                     </children>
+                 </HBox>
+                 <HBox>
+                     <children>
                          <Label text="Wolne miejsca: " />
                          <Label fx:id="tour_places" text="PLACES" wrapText="true" />
                      </children>
