@@ -1,10 +1,11 @@
 package agh.cs.projekt.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Embeddable
-public class Customer {
+public class Customer implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
