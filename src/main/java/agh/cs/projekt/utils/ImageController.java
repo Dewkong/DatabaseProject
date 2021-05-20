@@ -2,7 +2,6 @@ package agh.cs.projekt.utils;
 
 import agh.cs.projekt.models.ImageSource.ImageSource;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -58,7 +57,6 @@ public class ImageController {
     public static void loadFromSource(ImageView imageView, ImageSource src){
         if (src == null) {
             imageView.setImage(error_img);
-            centerImage(imageView);
             return;
         }
 
@@ -69,7 +67,6 @@ public class ImageController {
             System.out.println("Invalid ImageSource URL");
             e.printStackTrace();
             imageView.setImage(error_img);
-            centerImage(imageView);
             return;
         }
 
@@ -78,17 +75,14 @@ public class ImageController {
             if (i == null) {
                 //image is being loaded
                 imageView.setImage(loading_img);
-                centerImage(imageView);
                 addAndGetWaiting(url, imageView);
             } else {
                 //image has already been buffered
                 imageView.setImage(i);
-                centerImage(imageView);
             }
         } else {
             loadedImages.put(url, null); //indicate we are buffering the image
             imageView.setImage(loading_img);
-            centerImage(imageView);
             addAndGetWaiting(url, imageView);
             loadImage(url);
         }
@@ -113,30 +107,10 @@ public class ImageController {
             if (waitingList != null){
                 for (ImageView view : waitingList){
                     view.setImage(i);
-                    centerImage(view);
                 }
             }
         }).start();
     }
 
-    //centers the image present in an ImageView
-    public static void centerImage(ImageView imageView){
-        Image img = imageView.getImage();
-        if (img != null) {
-//            double ratioX = imageView.getFitWidth() / img.getWidth();
-//            double ratioY = imageView.getFitHeight() / img.getHeight();
-//
-//            double reduction = Math.min(ratioX, ratioY);
-//
-//            double wOffset = img.getWidth() * reduction;
-//            double hOffset = img.getHeight() * reduction;
-//
-//            double xMin = (imageView.getFitWidth() - wOffset) / 2.0;
-//            double yMin = (imageView.getFitHeight() - hOffset) / 2.0;
-//
-//            Rectangle2D viewport = new Rectangle2D(xMin, yMin, imageView.getFitWidth(), imageView.getFitHeight());
-//            imageView.setViewport(viewport);
-        }
-    }
 
 }
