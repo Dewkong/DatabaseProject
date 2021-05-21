@@ -2,7 +2,9 @@ package agh.cs.projekt;
 
 import agh.cs.projekt.models.ImageSource.*;
 import agh.cs.projekt.services.DatabaseHolder;
+import agh.cs.projekt.services.NavigationService;
 import agh.cs.projekt.services.UserHolder;
+import agh.cs.projekt.ui.FXMLLoginController;
 import agh.cs.projekt.utils.ImageController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -37,14 +39,8 @@ public class MainClass extends Application {
         //javafx window initialisation:
         //
 
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/login_scene.fxml"));
-
-        Scene scene = new Scene(root);
-
-        scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
-
+        NavigationService.getInstance().setInitialScene(primaryStage, "login_scene.fxml");
         primaryStage.setTitle("Biuro podr\u00F3\u017Cy");
-        primaryStage.setScene(scene);
         primaryStage.show();
     }
 }

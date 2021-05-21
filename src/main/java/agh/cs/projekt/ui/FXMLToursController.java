@@ -1,17 +1,16 @@
 package agh.cs.projekt.ui;
 
-import agh.cs.projekt.services.DatabaseHolder;
-import agh.cs.projekt.services.UserHolder;
 import agh.cs.projekt.models.ApplicationUser;
 import agh.cs.projekt.models.RoleEnum;
 import agh.cs.projekt.models.Tour;
+import agh.cs.projekt.services.DatabaseHolder;
+import agh.cs.projekt.services.NavigationService;
+import agh.cs.projekt.services.UserHolder;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -101,16 +100,11 @@ public class FXMLToursController implements Initializable {
 
                 Button detailsButton = new Button("Wiecej");
                 detailsButton.setOnAction(e -> {
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/tour_details_scene.fxml"));
-                        Parent root = loader.load();
-                        FXMLTourDetailsController controller = loader.getController();
-                        controller.displayTour(tour);
-                        logoutButton.getScene().setRoot(root);
-                    } catch (IOException ioException) {
-                        //TODO show some alert signaling the error ~W
-                        new IOException("Error in FXML loader", ioException).printStackTrace();
-                    }
+                    NavigationService.getInstance().setScene(
+                            "tour_details_scene.fxml",
+                            (FXMLTourDetailsController controller) ->{
+                                controller.displayTour(tour);
+                            });
                 });
 
                 HBox detailsBox = new HBox(detailsButton);
@@ -128,11 +122,12 @@ public class FXMLToursController implements Initializable {
         }
     }
 
-    public void logout(ActionEvent actionEvent) throws IOException {
+    public void logout(ActionEvent actionEvent) {
         UserHolder userHolder = UserHolder.getInstance();
         userHolder.removeUser();
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/login_scene.fxml"));
-        logoutButton.getScene().setRoot(root);
+
+        NavigationService.getInstance().flushHistory();
+        NavigationService.getInstance().setScene("login_scene.fxml");
     }
 
     public void addTour(ActionEvent actionEvent) throws IOException {

@@ -1,15 +1,14 @@
 package agh.cs.projekt.ui;
 
-import agh.cs.projekt.services.DatabaseHolder;
+import agh.cs.projekt.models.ApplicationUser;
 import agh.cs.projekt.models.Customer;
 import agh.cs.projekt.models.RoleEnum;
-import agh.cs.projekt.models.ApplicationUser;
+import agh.cs.projekt.services.DatabaseHolder;
+import agh.cs.projekt.services.NavigationService;
 import agh.cs.projekt.utils.PasswordUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -81,8 +80,7 @@ public class FXMLRegisterController implements Initializable {
     }
 
     public void goBack(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/login_scene.fxml"));
-        returnButton.getScene().setRoot(root);
+        NavigationService.getInstance().goBack();
     }
 
     public void registerPressed(ActionEvent actionEvent) {
