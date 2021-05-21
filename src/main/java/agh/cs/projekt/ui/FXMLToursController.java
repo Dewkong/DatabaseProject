@@ -1,11 +1,11 @@
-package agh.cs.projekt;
+package agh.cs.projekt.ui;
 
+import agh.cs.projekt.services.DatabaseHolder;
+import agh.cs.projekt.services.UserHolder;
 import agh.cs.projekt.models.ApplicationUser;
 import agh.cs.projekt.models.RoleEnum;
 import agh.cs.projekt.models.Tour;
-import agh.cs.projekt.ui.FXMLTourDetailsController;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -131,7 +131,7 @@ public class FXMLToursController implements Initializable {
     public void logout(ActionEvent actionEvent) throws IOException {
         UserHolder userHolder = UserHolder.getInstance();
         userHolder.removeUser();
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/login_screen.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/login_scene.fxml"));
         logoutButton.getScene().setRoot(root);
     }
 

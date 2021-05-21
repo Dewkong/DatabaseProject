@@ -1,6 +1,6 @@
 package agh.cs.projekt.ui;
 
-import agh.cs.projekt.UserHolder;
+import agh.cs.projekt.services.UserHolder;
 import agh.cs.projekt.models.Customer;
 import agh.cs.projekt.models.Rating;
 import agh.cs.projekt.models.Reservation;
@@ -102,7 +102,7 @@ public class FXMLTourDetailsController implements Initializable {
 
     //button callback
     public void goBack(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/tours_screen.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/tours_scene.fxml"));
         return_button.getScene().setRoot(root);
     }
 

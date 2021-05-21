@@ -1,4 +1,4 @@
-package agh.cs.projekt;
+package agh.cs.projekt.services;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

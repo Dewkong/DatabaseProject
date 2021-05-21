@@ -1,4 +1,4 @@
-package agh.cs.projekt;
+package agh.cs.projekt.services;
 
 import agh.cs.projekt.models.ApplicationUser;
 

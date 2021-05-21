@@ -1,6 +1,6 @@
 package agh.cs.projekt.models;
 
-import agh.cs.projekt.DatabaseHolder;
+import agh.cs.projekt.services.DatabaseHolder;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;

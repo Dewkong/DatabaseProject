@@ -1,5 +1,7 @@
-package agh.cs.projekt;
+package agh.cs.projekt.ui;
 
+import agh.cs.projekt.services.DatabaseHolder;
+import agh.cs.projekt.services.UserHolder;
 import agh.cs.projekt.models.ApplicationUser;
 import agh.cs.projekt.utils.PasswordUtils;
 import javafx.event.ActionEvent;
@@ -87,7 +89,7 @@ public class FXMLLoginController implements Initializable {
                     UserHolder userHolder = UserHolder.getInstance();
                     userHolder.setUser(user);
                     session.getTransaction().commit();
-                    Parent root = FXMLLoader.load(getClass().getResource("/fxml/tours_screen.fxml"));
+                    Parent root = FXMLLoader.load(getClass().getResource("/fxml/tours_scene.fxml"));
                     loginButton.getScene().setRoot(root);
                 }
                 else {
@@ -101,7 +103,7 @@ public class FXMLLoginController implements Initializable {
     }
 
     public void register(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/register_screen.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/register_scene.fxml"));
         registerButton.getScene().setRoot(root);
     }
 

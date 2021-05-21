@@ -1,5 +1,6 @@
-package agh.cs.projekt;
+package agh.cs.projekt.ui;
 
+import agh.cs.projekt.services.DatabaseHolder;
 import agh.cs.projekt.models.Customer;
 import agh.cs.projekt.models.RoleEnum;
 import agh.cs.projekt.models.ApplicationUser;
@@ -80,7 +81,7 @@ public class FXMLRegisterController implements Initializable {
     }
 
     public void goBack(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/login_screen.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/login_scene.fxml"));
         returnButton.getScene().setRoot(root);
     }
 

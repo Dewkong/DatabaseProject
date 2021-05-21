@@ -1,6 +1,6 @@
 package agh.cs.projekt.models;
 
-import agh.cs.projekt.DatabaseHolder;
+import agh.cs.projekt.services.DatabaseHolder;
 import agh.cs.projekt.models.ImageSource.ImageSource;
 import javafx.util.Pair;
 import org.hibernate.Session;
