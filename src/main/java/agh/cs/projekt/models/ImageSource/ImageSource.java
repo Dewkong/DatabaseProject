@@ -1,17 +1,15 @@
 package agh.cs.projekt.models.ImageSource;
 
+import javafx.scene.image.Image;
+
 import javax.persistence.*;
 import java.io.IOException;
-import java.net.URL;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class ImageSource {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    private int id;
-
     @Column(nullable = false)
     protected String path;
 
@@ -19,10 +17,7 @@ public abstract class ImageSource {
         //required by hibernate
     }
 
-    public ImageSource(String path) {
-        this.path = path;
-    }
-
-    public abstract URL getURL() throws IOException;
+    public abstract String getName() throws IOException;
+    public abstract Image getImage() throws IOException;
 
 }

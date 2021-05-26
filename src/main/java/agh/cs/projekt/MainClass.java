@@ -1,15 +1,11 @@
 package agh.cs.projekt;
 
-import agh.cs.projekt.models.ImageSource.*;
+import agh.cs.projekt.models.ImageSource.HttpImageSource;
 import agh.cs.projekt.services.DatabaseHolder;
 import agh.cs.projekt.services.NavigationService;
 import agh.cs.projekt.services.UserHolder;
-import agh.cs.projekt.ui.FXMLLoginController;
 import agh.cs.projekt.utils.ImageController;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class MainClass extends Application {

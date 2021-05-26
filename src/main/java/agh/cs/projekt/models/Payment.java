@@ -12,10 +12,6 @@ public class Payment {
 
     @ManyToOne
     @JoinColumn(nullable=false)
-    private Customer customer;
-
-    @ManyToOne
-    @JoinColumn(nullable=false)
     private Reservation reservation;
 
     @Column(nullable = false)
@@ -28,7 +24,6 @@ public class Payment {
     }
 
     public Payment(Customer customer, Reservation reservation, Date paymentDate, float amount) {
-        this.customer = customer;
         this.reservation = reservation;
         this.paymentDate = paymentDate;
         this.amount = amount;
@@ -36,14 +31,6 @@ public class Payment {
 
     public int getId() {
         return id;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
     }
 
     public Reservation getReservation() {
@@ -74,7 +61,6 @@ public class Payment {
     public String toString() {
         return "Payment{" +
                 "id=" + id +
-                ", customer=" + customer.getId() +
                 ", reservation=" + reservation.getId() +
                 ", paymentDate=" + paymentDate +
                 ", amount=" + amount +

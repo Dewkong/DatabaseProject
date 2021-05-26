@@ -5,6 +5,7 @@ import agh.cs.projekt.models.ImageSource.ImageSource;
 import javafx.util.Pair;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.annotations.Type;
 import org.hibernate.query.Query;
 
 import javax.persistence.*;
@@ -32,10 +33,11 @@ public class Tour {
 
     private float price;
 
+    @Type(type="text")
     @Column(nullable = false)
     private String description;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private ImageSource image;
 
     Tour(){
