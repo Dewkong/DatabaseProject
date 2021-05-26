@@ -33,7 +33,7 @@ public class Tour {
 
     private float price;
 
-    @Type(type="text")
+    @Lob
     @Column(nullable = false)
     private String description;
 
@@ -115,6 +115,7 @@ public class Tour {
     }
 
     public int getAvailablePlaces(){ //returns a negative number on error
+        System.err.println("Get available places");
         try(Session session = DatabaseHolder.getInstance().getSession()) {
             Transaction transaction = session.beginTransaction();
 
