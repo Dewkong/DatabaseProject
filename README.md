@@ -10,6 +10,9 @@ Realizowana funkcjonalność:
 -rezerwowanie wycieczek przez użytkowników  
 -ocenianie wycieczek przez użytkowników  
 
+Dokumentacja:
+https://docs.google.com/document/d/1kft6PHFZzvTaC07hE-qAhH6VvuBCSOhawVKEXrarohE/edit?usp=sharing
+
 Technologie:  
 Baza danych Oracle  
 Aplikacja kliencka w języku Java z wykorzystaniem frameworka Hibernate  
