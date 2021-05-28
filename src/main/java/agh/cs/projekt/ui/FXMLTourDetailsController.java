@@ -4,6 +4,7 @@ import agh.cs.projekt.models.Customer;
 import agh.cs.projekt.models.Rating;
 import agh.cs.projekt.models.Reservation;
 import agh.cs.projekt.models.Tour;
+import agh.cs.projekt.services.DatabaseHolder;
 import agh.cs.projekt.services.NavigationService;
 import agh.cs.projekt.services.UserHolder;
 import agh.cs.projekt.utils.ImageController;
