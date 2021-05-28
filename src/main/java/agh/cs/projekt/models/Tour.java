@@ -5,7 +5,6 @@ import agh.cs.projekt.models.ImageSource.ImageSource;
 import javafx.util.Pair;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.annotations.Type;
 import org.hibernate.query.Query;
 
 import javax.persistence.*;
@@ -115,7 +114,6 @@ public class Tour {
     }
 
     public int getAvailablePlaces(){ //returns a negative number on error
-        System.err.println("Get available places");
         try(Session session = DatabaseHolder.getInstance().getSession()) {
             Transaction transaction = session.beginTransaction();
 

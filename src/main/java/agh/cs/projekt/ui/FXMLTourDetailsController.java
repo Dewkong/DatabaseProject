@@ -8,12 +8,10 @@ import agh.cs.projekt.services.DatabaseHolder;
 import agh.cs.projekt.services.NavigationService;
 import agh.cs.projekt.services.UserHolder;
 import agh.cs.projekt.utils.ImageController;
-import agh.cs.projekt.utils.PersistentAlert;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -80,7 +78,8 @@ public class FXMLTourDetailsController implements Initializable {
     public void displayTour(Tour tour){
         if (tour == null){
             System.err.println("Trying to display a null tour!");
-            //TODO revert to previous screen ~W
+            NavigationService.getInstance().goBack();
+            return;
         }
 
         this.tour = tour;
@@ -106,123 +105,48 @@ public class FXMLTourDetailsController implements Initializable {
 
     //button callback
     public void makeReservation(ActionEvent actionEvent) {
-        PersistentAlert alert = new PersistentAlert(
-                AlertType.INFORMATION,
+        DatabaseHolder.getInstance().dbCallWithAlert(
                 "Dodawanie rezerwacji",
-                "Prosz\u0119 czeka\u0107, dokonujemy rezerwacji...");
-        alert.show();
-
-        new Thread(() -> {
-            try {
-                Reservation reservation =  customer.addReservation(tour);
-                if (reservation != null){
-                    //reservation successful, refresh the ui with most recent data (in case there were changes)
-                    Platform.runLater(() -> {
-                        //run on FX Thread
-                        alert.setHeaderText("Gotowe!");
-                    });
-                } else {
-                    //there is some discrepancy in the displayed data - refresh the ui
-                    Platform.runLater(() -> {
-                        //run on FX Thread
-                        alert.setHeaderText("Wystapi\u0142 b\u0142\u0105d. Rezerwacja nie zosta\u0142a dokonana.");
-                    });
-                }
-            } catch (Exception e) {
-                System.err.println("Error while making reservation");
-                e.printStackTrace();
-                Platform.runLater(() -> {
-                    //run on FX Thread
-                    alert.setHeaderText("Wystapi\u0142 b\u0142\u0105d. Rezerwacja nie została dokonana.");
-                });
-            } finally {
-                //enable closing of the alert dialog
-                Platform.runLater(() -> {
-                    //run on FX thread
-                    updateReservationsUI();
-                    alert.enableClose();
-                });
-            }
-        }).start();
+                "Proszę czekać, dokonujemy rezerwacji...",
+                "Gotowe!",
+                "Wystapił błąd. Rezerwacja nie została dokonana.",
+                session -> {
+                    Reservation reservation = customer.addReservation(tour);
+                    if (reservation == null) throw new RuntimeException("Failed to add reservation");
+                },
+                () -> Platform.runLater(this::updateReservationsUI)
+        );
     }
 
     //button callback
     public void cancelReservation(ActionEvent actionEvent) {
-        PersistentAlert alert = new PersistentAlert(
-                AlertType.INFORMATION,
+        DatabaseHolder.getInstance().dbCallWithAlert(
                 "Anulowanie rezerwacji",
-                "Prosz\u0119 czeka\u0107, anulujemy rezerwacj\u0119...");
-        alert.show();
-
-        new Thread(() -> {
-            try {
-                Reservation reservation = customer.cancelLatestReservation(tour);
-                if (reservation != null){
-                    //reservation successful, refresh the ui with most recent data (in case there were changes)
-                    Platform.runLater(() -> {
-                        //run on FX Thread
-                        alert.setHeaderText("Gotowe!");
-                    });
-                } else {
-                    //there is some discrepancy in the displayed data - refresh the ui
-                    Platform.runLater(() -> {
-                        //run on FX Thread
-                        alert.setHeaderText("Wystapi\u0142 b\u0142\u0105d. Nie uda\u0142o si\u0119 anulowa\u0107 rezerwacji.");
-                    });
-                }
-            } catch (Exception e) {
-                System.err.println("Error while canceling reservation");
-                e.printStackTrace();
-                Platform.runLater(() -> {
-                    //run on FX Thread
-                    alert.setHeaderText("Wystapi\u0142 b\u0142\u0105d. Nie uda\u0142o si\u0119 anulowa\u0107 rezerwacji.");
-                });
-            } finally {
-                //enable closing of the alert dialog
-                Platform.runLater(() -> {
-                    //run on FX thread
-                    updateReservationsUI();
-                    alert.enableClose();
-                });
-            }
-        }).start();
+                "Proszę czekać,  anulujemy rezerwację...",
+                "Gotowe!",
+                "Wystapił błąd. Nie udało się anulować rezerwacji.",
+                session -> {
+                    Reservation reservation = customer.cancelLatestReservation(tour);
+                    if (reservation == null) throw new RuntimeException("Failed to add reservation");
+                },
+                () -> Platform.runLater(this::updateReservationsUI)
+        );
     }
 
     //called when rating is changed by the user
     public void changeRating(ActionEvent event){
         RatingEnum newValue = customer_rating.getValue();
         if (newValue != currentCustomerRating){
-            //rating was changed
-            PersistentAlert alert = new PersistentAlert(
-                    AlertType.INFORMATION,
+            DatabaseHolder.getInstance().dbCallWithAlert(
                     "Ocenianie wycieczki",
-                    "Prosz\u0119 czeka\u0107, zapisujemy ocen\u0119...");
-            alert.show();
-
-            new Thread(() -> {
-                try {
-                    Rating rating = customer.rateTour(tour, newValue.toInt());
-                    //rating modification successful, refresh the ui with most recent data
-                    Platform.runLater(() -> {
-                        //run on FX Thread
-                        alert.setHeaderText("Gotowe!");
-                    });
-                } catch (Exception e) {
-                    System.err.println("Error while changing rating");
-                    e.printStackTrace();
-                    Platform.runLater(() -> {
-                        //run on FX Thread
-                        alert.setHeaderText("Wystapi\u0142 b\u0142\u0105d. Ocena nie została zapisana.");
-                    });
-                } finally {
-                    //enable closing of the alert dialog
-                    Platform.runLater(() -> {
-                        //run on FX thread
-                        updateRatingsUI();
-                        alert.enableClose();
-                    });
-                }
-            }).start();
+                    "Proszę czekać, zapisujemy ocenę...",
+                    "Gotowe!",
+                    "Wystapił błąd. Ocena nie została zapisana.",
+                    session -> {
+                        customer.rateTour(tour, newValue.toInt());
+                    },
+                    () -> Platform.runLater(this::updateRatingsUI)
+            );
         }
 
         currentCustomerRating = newValue;
@@ -234,18 +158,19 @@ public class FXMLTourDetailsController implements Initializable {
         reservationsReady = false;
         updateLoadingUI();
 
-        new Thread(() -> {
-            //fetch available/reserved places
-            int availablePlaces = tour.getAvailablePlaces();
-            int reservations =  customer.getReservationsForTour(tour);
-            Platform.runLater(() -> {
-                //run on FX thread
-                reservationsReady = true;
-                setTourAvailablePlaces(availablePlaces);
-                setCustomerReservedPlaces(reservations);
-                updateLoadingUI();
-            });
-        }).start();
+        DatabaseHolder.getInstance().dbCallNonBlocking(
+                session -> {
+                    int availablePlaces = tour.getAvailablePlaces();
+                    int reservations =  customer.getReservationsForTour(tour);
+                    Platform.runLater(() -> {
+                        //run on FX thread
+                        reservationsReady = true;
+                        setTourAvailablePlaces(availablePlaces);
+                        setCustomerReservedPlaces(reservations);
+                        updateLoadingUI();
+                    });
+                }
+        );
     }
 
     //fetches info about ratings and updates the ui accordingly
@@ -254,39 +179,36 @@ public class FXMLTourDetailsController implements Initializable {
         ratingsReady = false;
         updateLoadingUI();
 
-        new Thread(() -> {
-            try {
-                //fetch info about the tour's average rating and the customer's rating of this tour
-
-                Rating customerRating = customer.getRatingForTour(tour);
-                int customerRatingVal = customerRating == null ? 0 : customerRating.getRating();
-                currentCustomerRating = RatingEnum.values()[customerRatingVal];
-                Pair<Double, Long> pair = tour.getRating();
-                if (pair != null) {
-                    double averageRating = pair.getKey();
-                    long ratingsAmt = pair.getValue();
+        DatabaseHolder.getInstance().dbCallNonBlocking(
+                session -> {
+                    Rating customerRating = customer.getRatingForTour(tour);
+                    int customerRatingVal = customerRating == null ? 0 : customerRating.getRating();
+                    currentCustomerRating = RatingEnum.values()[customerRatingVal];
+                    Pair<Double, Long> pair = tour.getRating();
+                    if (pair != null) {
+                        double averageRating = pair.getKey();
+                        long ratingsAmt = pair.getValue();
+                        Platform.runLater(() -> {
+                            //run on FX thread
+                            ratingsReady = true;
+                            setRatings(customerRatingVal, averageRating, ratingsAmt);
+                            updateLoadingUI();
+                        });
+                    } else {
+                        //will be caught immediately
+                        throw new NullPointerException("Error when retrieving tour rating");
+                    }
+                },
+                exception ->{
+                    // on error
                     Platform.runLater(() -> {
-                        //run on FX thread
                         ratingsReady = true;
-                        setRatings(customerRatingVal, averageRating, ratingsAmt);
+                        setRatings(-1, -1, -1);
                         updateLoadingUI();
                     });
-                } else {
-                    //will be caught immediately
-                    throw new NullPointerException("Error when retrieving tour rating");
                 }
-            } catch (Exception e){
-                //error
-                System.err.println("Error when fetching ratings");
-                e.printStackTrace();
+        );
 
-                Platform.runLater(() -> {
-                    ratingsReady = true;
-                    setRatings(-1, -1, -1);
-                    updateLoadingUI();
-                });
-            }
-        }).start();
     }
 
     //hides/shows appropriate elements based on the state of the "xyzReady" flags

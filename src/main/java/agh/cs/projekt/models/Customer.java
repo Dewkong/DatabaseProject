@@ -99,7 +99,7 @@ public class Customer implements Serializable {
         }
     }
 
-    //returns the newly created reservation if reservation was successfully added, or reservation couldn't be added
+    //returns the newly created reservation if reservation was successfully added, or null if reservation couldn't be added
     public Reservation addReservation(Tour tour) throws Exception {
         try(Session session = DatabaseHolder.getInstance().getSession()){
             Transaction transaction = session.beginTransaction();
