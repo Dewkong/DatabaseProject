@@ -89,6 +89,61 @@ public class Reservation {
         return setPlacesAndPersist(this.getReservedPlaces() + placesDelta);
     }
 
+    //returns the rating object for this reservation, or null if no reservation was made
+    public Rating getRatingForReservation(){
+        try (Session session = DatabaseHolder.getInstance().getSession()){
+            Transaction transaction = session.beginTransaction();
+
+            Rating rating = session.createQuery("from Rating where reservation = :reservation", Rating.class)
+                    .setParameter("reservation", this)
+                    .getSingleResult();
+            transaction.commit();
+
+            return rating;
+        } catch (NoResultException e){
+            //consume error
+            return null;
+        }
+    }
+
+    //adds a rating to a reservation, returns the new rating object, or null if value was 0 (rating was deleted)
+    public Rating setRating(int value) throws Exception {
+        Rating currentRating = this.getRatingForReservation();
+
+        try(Session session = DatabaseHolder.getInstance().getSession()){
+            Transaction transaction = session.beginTransaction();
+
+            if (currentRating == null){
+                //user hasn't rated yet
+                if (value == 0){
+                    //user doesn't want to add a rating
+                    transaction.commit();
+                    return null;
+                } else {
+                    //add new rating
+                    Rating rating = new Rating(this, value);
+                    session.save(rating);
+                    transaction.commit();
+                    return rating;
+                }
+            } else {
+                //user wants to change the rating
+                if (value == 0) {
+                    //user wants to remove the rating
+                    session.delete(currentRating);
+                    transaction.commit();
+                    return null;
+                } else {
+                    //user wants to alter the rating
+                    currentRating.setRating(value);
+                    session.update(currentRating);
+                    transaction.commit();
+                    return currentRating;
+                }
+            }
+        }
+    }
+
 
     @Override
     public String toString() {

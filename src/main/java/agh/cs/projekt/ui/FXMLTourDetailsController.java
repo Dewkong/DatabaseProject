@@ -96,7 +96,6 @@ public class FXMLTourDetailsController implements Initializable {
         tour_price.setText(String.format("%.2f", tour.getPrice()) + "z\u0142"); // \u0142 - unicode for ł
 
         updateReservationsUI();
-        updateRatingsUI();
 
         customer_rating.setOnAction(this::changeRating);
     }
@@ -120,7 +119,12 @@ public class FXMLTourDetailsController implements Initializable {
                     Transaction transaction = session.beginTransaction();
                     reservation = new Reservation(customer, tour, reservePlaces);
                     session.save(reservation);
-                    transaction.commit();
+                    if (reservation.getTour().getAvailablePlaces(session) < 0){
+                        transaction.rollback();
+                        throw new IllegalArgumentException("Trying to reserve too many places");
+                    } else {
+                        transaction.commit();
+                    }
                 },
                 () -> Platform.runLater(this::updateReservationsUI)
         );
@@ -171,9 +175,7 @@ public class FXMLTourDetailsController implements Initializable {
                     "Proszę czekać, zapisujemy ocenę...",
                     "Gotowe!",
                     "Wystapił błąd. Ocena nie została zapisana.",
-                    session -> {
-                        customer.rateTour(tour, newValue.toInt());
-                    },
+                    session -> reservation.setRating(newValue.toInt()),
                     () -> Platform.runLater(this::updateRatingsUI)
             );
         }
@@ -197,7 +199,7 @@ public class FXMLTourDetailsController implements Initializable {
                         setTourAvailablePlaces(availablePlaces);
                         if (reservation == null) setCustomerNoReservation();
                         else setCustomerReservedPlaces(reservation.getReservedPlaces());
-                        updateLoadingUI();
+                        updateRatingsUI();
                     });
                 }
         );
@@ -211,7 +213,7 @@ public class FXMLTourDetailsController implements Initializable {
 
         DatabaseHolder.getInstance().dbCallNonBlocking(
                 session -> {
-                    Rating customerRating = customer.getRatingForTour(tour);
+                    Rating customerRating = reservation == null ? null : reservation.getRatingForReservation();
                     int customerRatingVal = customerRating == null ? 0 : customerRating.getRating();
                     currentCustomerRating = RatingEnum.values()[customerRatingVal];
                     Pair<Double, Long> pair = tour.getRating();

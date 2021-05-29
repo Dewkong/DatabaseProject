@@ -1,54 +1,38 @@
 package agh.cs.projekt.models;
 
-import javax.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.io.Serializable;
 
 @Entity
-public class Rating implements Serializable { //Hibernate requires implementation of Serializable to have a composite key here
+public class Rating implements Serializable {
 
-    @EmbeddedId
-    private RatingID ratingID;
-
-    @MapsId("customerID")
-    @ManyToOne(optional = false)
-    @JoinColumns(value = {
-            @JoinColumn(name = "customerID", referencedColumnName = "id") })
-    private Customer customer;
-
-    @MapsId("tourID")
-    @ManyToOne(optional = false)
-    @JoinColumns(value = {
-            @JoinColumn(name = "tourID", referencedColumnName = "id") })
-    private Tour tour;
+    @Id
+    @OneToOne()
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Reservation reservation;
 
     private int rating;
 
     public Rating() {
         //required by Hibernate
-        this.ratingID = new RatingID();
     }
 
-    public Rating(Customer customer, Tour tour, int rating) {
-        this.customer = customer;
-        this.tour = tour;
+    public Rating(Reservation reservation, int rating) {
+        this.reservation = reservation;
         this.rating = rating;
-        this.ratingID = new RatingID();
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Reservation getReservation() {
+        return reservation;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public Tour getTour() {
-        return tour;
-    }
-
-    public void setTour(Tour tour) {
-        this.tour = tour;
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 
     public int getRating() {
@@ -62,8 +46,7 @@ public class Rating implements Serializable { //Hibernate requires implementatio
     @Override
     public String toString() {
         return "Rating{" +
-                "customer=" + customer.getId() +
-                ", tour=" + tour.getId() +
+                "reservation=" + reservation +
                 ", rating=" + rating +
                 '}';
     }
