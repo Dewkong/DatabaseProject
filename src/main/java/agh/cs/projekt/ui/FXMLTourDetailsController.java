@@ -9,18 +9,20 @@ import agh.cs.projekt.services.NavigationService;
 import agh.cs.projekt.services.UserHolder;
 import agh.cs.projekt.utils.ImageController;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.util.Pair;
+import org.hibernate.Transaction;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class FXMLTourDetailsController implements Initializable {
@@ -63,6 +65,7 @@ public class FXMLTourDetailsController implements Initializable {
     //private caches
     private Tour tour = null;
     private Customer customer = null;
+    private Reservation reservation = null;
     private RatingEnum currentCustomerRating = RatingEnum.NONE;
 
     private boolean reservationsReady = false;
@@ -105,14 +108,19 @@ public class FXMLTourDetailsController implements Initializable {
 
     //button callback
     public void makeReservation(ActionEvent actionEvent) {
+        Integer reservePlaces = showReservationAmountDialog();
+        if (reservePlaces == null) return; //cancel reservation
+
         DatabaseHolder.getInstance().dbCallWithAlert(
                 "Dodawanie rezerwacji",
                 "Proszę czekać, dokonujemy rezerwacji...",
                 "Gotowe!",
                 "Wystapił błąd. Rezerwacja nie została dokonana.",
                 session -> {
-                    Reservation reservation = customer.addReservation(tour);
-                    if (reservation == null) throw new RuntimeException("Failed to add reservation");
+                    Transaction transaction = session.beginTransaction();
+                    reservation = new Reservation(customer, tour, reservePlaces);
+                    session.save(reservation);
+                    transaction.commit();
                 },
                 () -> Platform.runLater(this::updateReservationsUI)
         );
@@ -125,12 +133,33 @@ public class FXMLTourDetailsController implements Initializable {
                 "Proszę czekać,  anulujemy rezerwację...",
                 "Gotowe!",
                 "Wystapił błąd. Nie udało się anulować rezerwacji.",
-                session -> {
-                    Reservation reservation = customer.cancelLatestReservation(tour);
-                    if (reservation == null) throw new RuntimeException("Failed to add reservation");
-                },
+                session -> reservation.setPlacesAndPersist(0),
                 () -> Platform.runLater(this::updateReservationsUI)
         );
+    }
+
+    private Integer showReservationAmountDialog(){
+        TextInputDialog dialog = new TextInputDialog("1");
+        dialog.setTitle("Dokonywanie rezerwacji");
+        dialog.setHeaderText("Podaj ilość miejsc, które chcesz zarezerwować");
+        dialog.setContentText("");
+
+        Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+        TextField inputField = dialog.getEditor();
+        BooleanBinding isInvalid = Bindings.createBooleanBinding(
+                () -> {
+                    try {
+                        return Integer.parseInt(inputField.getText()) <= 0;
+                    } catch (NumberFormatException e){
+                        return true;
+                    }
+                },
+                inputField.textProperty());
+        okButton.disableProperty().bind(isInvalid);
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) return Integer.parseInt(result.get());
+        else return null;
     }
 
     //called when rating is changed by the user
@@ -160,13 +189,14 @@ public class FXMLTourDetailsController implements Initializable {
 
         DatabaseHolder.getInstance().dbCallNonBlocking(
                 session -> {
+                    reservation = customer.getReservationForTour(tour);
                     int availablePlaces = tour.getAvailablePlaces();
-                    int reservations =  customer.getReservationsForTour(tour);
                     Platform.runLater(() -> {
                         //run on FX thread
                         reservationsReady = true;
                         setTourAvailablePlaces(availablePlaces);
-                        setCustomerReservedPlaces(reservations);
+                        if (reservation == null) setCustomerNoReservation();
+                        else setCustomerReservedPlaces(reservation.getReservedPlaces());
                         updateLoadingUI();
                     });
                 }
@@ -259,17 +289,17 @@ public class FXMLTourDetailsController implements Initializable {
     }
 
     //must be run on the FX Thread
+    private void setCustomerNoReservation(){
+        customer_reservations.setText("Nie masz jeszcze rezerwacji"); // \u0142 - unicode for ł \u0105 - unicode for ą
+        button_cancel_reservation.setDisable(true);
+        button_make_reservation.setDisable(false);
+    }
+
+    //must be run on the FX Thread
     private void setCustomerReservedPlaces(int reservedPlaces){
-        if (reservedPlaces < 0){
-            customer_reservations.setText("B\u0142\u0105d"); // \u0142 - unicode for ł \u0105 - unicode for ą
-            button_cancel_reservation.setDisable(true);
-        } else if (reservedPlaces == 0){
-            customer_reservations.setText(String.format("%d", reservedPlaces));
-            button_cancel_reservation.setDisable(true);
-        } else {
-            customer_reservations.setText(String.format("%d", reservedPlaces));
-            button_cancel_reservation.setDisable(false);
-        }
+        customer_reservations.setText(String.format("%d", reservedPlaces));
+        button_cancel_reservation.setDisable(false);
+        button_make_reservation.setDisable(true);
     }
 
     //must be run on the FX Thread

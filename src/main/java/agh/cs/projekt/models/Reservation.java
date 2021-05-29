@@ -1,49 +1,41 @@
 package agh.cs.projekt.models;
 
+import agh.cs.projekt.services.DatabaseHolder;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
 import javax.persistence.*;
-import java.sql.Date;
 
 @Entity
 public class Reservation {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @EmbeddedId
+    private ReservationID reservationID;
 
-    @ManyToOne
-    @JoinColumn(nullable=false)
+    @MapsId("customerID")
+    @ManyToOne(optional = false)
+    @JoinColumns(value = {
+            @JoinColumn(name = "customerID", referencedColumnName = "id") })
     private Customer customer;
 
-
-    @ManyToOne
-    @JoinColumn(nullable=false)
+    @MapsId("tourID")
+    @ManyToOne(optional = false)
+    @JoinColumns(value = {
+            @JoinColumn(name = "tourID", referencedColumnName = "id") })
     private Tour tour;
 
-    @Column(nullable = false)
-    private Date reservationDate;
-
-    private boolean isCanceled;
+    private int reservedPlaces;
 
     public Reservation() {
         //required by Hibernate
+        this.reservationID = new ReservationID();
     }
 
-    public Reservation(Customer customer, Tour tour) {
+    public Reservation(Customer customer, Tour tour, int reservedPlaces) {
         this.customer = customer;
         this.tour = tour;
-        this.reservationDate = new Date(System.currentTimeMillis());
-        this.isCanceled = false;
-    }
-
-    public Reservation(Customer customer, Tour tour, Date reservationDate, boolean isCanceled) {
-        this.customer = customer;
-        this.tour = tour;
-        this.reservationDate = reservationDate;
-        this.isCanceled = isCanceled;
-    }
-
-    public int getId() {
-        return id;
+        this.reservedPlaces = reservedPlaces;
+        this.reservationID = new ReservationID();
     }
 
     public Customer getCustomer() {
@@ -62,35 +54,48 @@ public class Reservation {
         this.tour = tour;
     }
 
-    public Date getReservationDate() {
-        return reservationDate;
+    public int getReservedPlaces() {
+        return reservedPlaces;
     }
 
-    public void setReservationDate(Date reservationDate) {
-        this.reservationDate = reservationDate;
+    public void setReservedPlaces(int reservedPlaces) {
+        this.reservedPlaces = reservedPlaces;
     }
 
-    public boolean isCanceled() {
-        return isCanceled;
-    }
-
-    public void setCanceled(boolean canceled) {
-        isCanceled = canceled;
-    }
-
+    // redundant, kept for compatibility
     public int getReservedAmount(){
-        return isCanceled ? 0 : 1;
+        return getReservedPlaces();
     }
+
+    public Reservation setPlacesAndPersist(int places){
+        try (Session session = DatabaseHolder.getInstance().getSession()){
+            Transaction transaction = session.beginTransaction();
+            setReservedPlaces(places);
+            if (places > 0) {
+                session.save(this);
+                transaction.commit();
+                return this;
+            } else if (places == 0){
+                session.delete(this);
+                transaction.commit();
+                return null;
+            } else {
+                throw new IllegalArgumentException("Places can't be negative");
+            }
+        }
+    }
+
+    public Reservation changePlacesAndPersist(int placesDelta){
+        return setPlacesAndPersist(this.getReservedPlaces() + placesDelta);
+    }
+
 
     @Override
     public String toString() {
         return "Reservation{" +
-                "id=" + id +
-                ", customer=" + customer.getId() +
-                ", tour=" + tour.getId() +
-                ", reservationDate=" + reservationDate +
-                ", isCanceled=" + isCanceled +
+                ", customer=" + customer +
+                ", tour=" + tour +
+                ", reservedPlaces=" + reservedPlaces +
                 '}';
     }
-
 }
