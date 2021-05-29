@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
 
@@ -116,19 +117,22 @@ public class Tour {
     public int getAvailablePlaces(){ //returns a negative number on error
         try(Session session = DatabaseHolder.getInstance().getSession()) {
             Transaction transaction = session.beginTransaction();
-
-            Query<Reservation> query = session.createQuery("from Reservation where tour = :tour", Reservation.class).setParameter("tour", this);
-            List<Reservation> reservations = query.getResultList();
-            int reservedPlaces = 0;
-            for (Reservation r : reservations){
-                reservedPlaces += r.getReservedAmount();
-            }
-
+            int result = getAvailablePlaces(session);
             transaction.commit();
-            return maxPlaces - reservedPlaces;
+            return result;
         } catch (Exception e){
             System.err.println("Error when fetching number of places");
             e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public int getAvailablePlaces(Session session) { //returns a negative number on error
+        try {
+            BigDecimal result = (BigDecimal) session.createNativeQuery("select AVAILABLE_PLACES(:id) from dual").setParameter("id", this.id).getSingleResult();
+            System.out.println("Result " + result);
+            return result.intValue();
+        } catch (NoResultException e){
             return -1;
         }
     }
@@ -138,13 +142,13 @@ public class Tour {
         try(Session session = DatabaseHolder.getInstance().getSession()) {
             Transaction transaction = session.beginTransaction();
 
-            Long ratingsAmt = session.createQuery("select count(*) from Rating where tour = :tour", Long.class).setParameter("tour", this).getSingleResult();
-            Double average = session.createQuery("select avg(rating) from Rating where tour = :tour", Double.class).setParameter("tour", this).getSingleResult();
-            if (ratingsAmt == null) ratingsAmt = -1L;
-            if (average == null) average = 0.0;
+            BigDecimal ratingsAmt = (BigDecimal) session.createNativeQuery("select RATINGS_AMT(:id) from dual").setParameter("id", this.id).getSingleResult();
+            BigDecimal average = (BigDecimal) session.createNativeQuery("select AVG_RATING(:id) from dual").setParameter("id", this.id).getSingleResult();
+            if (ratingsAmt == null) ratingsAmt = BigDecimal.valueOf(-1L);
+            if (average == null) average = BigDecimal.valueOf(0.0);
 
             transaction.commit();
-            return new Pair<>(average, ratingsAmt);
+            return new Pair<>(average.doubleValue(), ratingsAmt.longValue());
         } catch (Exception e){
             System.err.println("Error when fetching number of places");
             e.printStackTrace();

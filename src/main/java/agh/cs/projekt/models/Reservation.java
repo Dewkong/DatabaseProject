@@ -1,49 +1,41 @@
 package agh.cs.projekt.models;
 
+import agh.cs.projekt.services.DatabaseHolder;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
 import javax.persistence.*;
-import java.sql.Date;
 
 @Entity
 public class Reservation {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @EmbeddedId
+    private ReservationID reservationID;
 
-    @ManyToOne
-    @JoinColumn(nullable=false)
+    @MapsId("customerID")
+    @ManyToOne(optional = false)
+    @JoinColumns(value = {
+            @JoinColumn(name = "customerID", referencedColumnName = "id") })
     private Customer customer;
 
-
-    @ManyToOne
-    @JoinColumn(nullable=false)
+    @MapsId("tourID")
+    @ManyToOne(optional = false)
+    @JoinColumns(value = {
+            @JoinColumn(name = "tourID", referencedColumnName = "id") })
     private Tour tour;
 
-    @Column(nullable = false)
-    private Date reservationDate;
-
-    private boolean isCanceled;
+    private int reservedPlaces;
 
     public Reservation() {
         //required by Hibernate
+        this.reservationID = new ReservationID();
     }
 
-    public Reservation(Customer customer, Tour tour) {
+    public Reservation(Customer customer, Tour tour, int reservedPlaces) {
         this.customer = customer;
         this.tour = tour;
-        this.reservationDate = new Date(System.currentTimeMillis());
-        this.isCanceled = false;
-    }
-
-    public Reservation(Customer customer, Tour tour, Date reservationDate, boolean isCanceled) {
-        this.customer = customer;
-        this.tour = tour;
-        this.reservationDate = reservationDate;
-        this.isCanceled = isCanceled;
-    }
-
-    public int getId() {
-        return id;
+        this.reservedPlaces = reservedPlaces;
+        this.reservationID = new ReservationID();
     }
 
     public Customer getCustomer() {
@@ -62,35 +54,103 @@ public class Reservation {
         this.tour = tour;
     }
 
-    public Date getReservationDate() {
-        return reservationDate;
+    public int getReservedPlaces() {
+        return reservedPlaces;
     }
 
-    public void setReservationDate(Date reservationDate) {
-        this.reservationDate = reservationDate;
+    public void setReservedPlaces(int reservedPlaces) {
+        this.reservedPlaces = reservedPlaces;
     }
 
-    public boolean isCanceled() {
-        return isCanceled;
-    }
-
-    public void setCanceled(boolean canceled) {
-        isCanceled = canceled;
-    }
-
+    // redundant, kept for compatibility
     public int getReservedAmount(){
-        return isCanceled ? 0 : 1;
+        return getReservedPlaces();
     }
+
+    public Reservation setPlacesAndPersist(int places){
+        try (Session session = DatabaseHolder.getInstance().getSession()){
+            Transaction transaction = session.beginTransaction();
+            setReservedPlaces(places);
+            if (places > 0) {
+                session.save(this);
+                transaction.commit();
+                return this;
+            } else if (places == 0){
+                session.delete(this);
+                transaction.commit();
+                return null;
+            } else {
+                throw new IllegalArgumentException("Places can't be negative");
+            }
+        }
+    }
+
+    public Reservation changePlacesAndPersist(int placesDelta){
+        return setPlacesAndPersist(this.getReservedPlaces() + placesDelta);
+    }
+
+    //returns the rating object for this reservation, or null if no reservation was made
+    public Rating getRatingForReservation(){
+        try (Session session = DatabaseHolder.getInstance().getSession()){
+            Transaction transaction = session.beginTransaction();
+
+            Rating rating = session.createQuery("from Rating where reservation = :reservation", Rating.class)
+                    .setParameter("reservation", this)
+                    .getSingleResult();
+            transaction.commit();
+
+            return rating;
+        } catch (NoResultException e){
+            //consume error
+            return null;
+        }
+    }
+
+    //adds a rating to a reservation, returns the new rating object, or null if value was 0 (rating was deleted)
+    public Rating setRating(int value) throws Exception {
+        Rating currentRating = this.getRatingForReservation();
+
+        try(Session session = DatabaseHolder.getInstance().getSession()){
+            Transaction transaction = session.beginTransaction();
+
+            if (currentRating == null){
+                //user hasn't rated yet
+                if (value == 0){
+                    //user doesn't want to add a rating
+                    transaction.commit();
+                    return null;
+                } else {
+                    //add new rating
+                    Rating rating = new Rating(this, value);
+                    session.save(rating);
+                    transaction.commit();
+                    return rating;
+                }
+            } else {
+                //user wants to change the rating
+                if (value == 0) {
+                    //user wants to remove the rating
+                    session.delete(currentRating);
+                    transaction.commit();
+                    return null;
+                } else {
+                    //user wants to alter the rating
+                    currentRating.setRating(value);
+                    session.update(currentRating);
+                    transaction.commit();
+                    return currentRating;
+                }
+            }
+        }
+    }
+
 
     @Override
     public String toString() {
         return "Reservation{" +
-                "id=" + id +
-                ", customer=" + customer.getId() +
-                ", tour=" + tour.getId() +
-                ", reservationDate=" + reservationDate +
-                ", isCanceled=" + isCanceled +
+                ", customer=" + customer +
+                ", tour=" + tour +
+                ", reservedPlaces=" + reservedPlaces +
                 '}';
     }
-
 }

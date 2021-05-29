@@ -4,11 +4,11 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
-public class RatingID implements Serializable {
+public class ReservationID implements Serializable {
     private Integer customerID;
     private Integer tourID;
 
-    public RatingID() {
+    public ReservationID() {
         //required by Hibernate
     }
 

@@ -11,7 +11,6 @@ public class Payment {
     private int id;
 
     @ManyToOne
-    @JoinColumn(nullable=false)
     private Reservation reservation;
 
     @Column(nullable = false)
@@ -61,7 +60,7 @@ public class Payment {
     public String toString() {
         return "Payment{" +
                 "id=" + id +
-                ", reservation=" + reservation.getId() +
+                ", reservation=" + reservation +
                 ", paymentDate=" + paymentDate +
                 ", amount=" + amount +
                 '}';
