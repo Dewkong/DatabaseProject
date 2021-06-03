@@ -24,15 +24,15 @@ public class LocalImageSource extends ImageSource{
         //required by hibernate
     }
 
-    public LocalImageSource(String path) { //path is a relative path from the resources folder e.g: "/images/my_img.png"
+    public LocalImageSource(String path) { //path is an absolute path to the image (but now that the UI handles that, you should not worry about it)
         try {
-            File file = new File(getClass().getResource(path).toURI());
+            File file = new File(path);
             BufferedImage bImage = ImageIO.read(file);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ImageIO.write(bImage, "jpg", bos);
             this.image = bos.toByteArray();
             this.path = path;
-        } catch (IOException | URISyntaxException e){
+        } catch (IOException e){
             System.err.println("Error when reading image");
             e.printStackTrace();
         }

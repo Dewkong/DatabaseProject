@@ -131,6 +131,6 @@ public class FXMLToursController implements Initializable {
     }
 
     public void addTour(ActionEvent actionEvent) throws IOException {
-        System.out.println("TODO add tour");
+        NavigationService.getInstance().setScene("add_tour_scene.fxml");
     }
 }

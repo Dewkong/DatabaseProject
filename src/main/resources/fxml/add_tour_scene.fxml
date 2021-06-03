@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.cs.projekt.ui.FXMLAddTourController">
+    <GridPane alignment="CENTER" prefHeight="240.0" prefWidth="640.0">
+        <columnConstraints>
+            <ColumnConstraints prefWidth="160.0" />
+            <ColumnConstraints prefWidth="320.0" />
+            <ColumnConstraints prefWidth="160.0" />
+        </columnConstraints>
+        <HBox alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <Button fx:id="returnButton" onAction="#goBack" />
+        </HBox>
+
+        <Label fx:id="title" prefHeight="40" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label fx:id="nameLabel" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <TextField fx:id="nameTextField" onKeyPressed="#keyPressedOnTextField" prefWidth="320" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+        <Label fx:id="countryLabel" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <ChoiceBox fx:id="countryChoiceBox" onKeyPressed="#keyPressedOnChoice" prefWidth="320" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+        <Label fx:id="dateLabel" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+        <DatePicker fx:id="datePicker" onKeyPressed="#keyPressedOnDate" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+        <Label fx:id="maxPlacesLabel" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+        <TextField fx:id="maxPlacesTextField" onKeyPressed="#keyPressedOnTextField" prefWidth="320" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+
+        <Label fx:id="priceLabel" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+        <TextField fx:id="priceTextField" onKeyPressed="#keyPressedOnTextField" prefWidth="320" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+
+        <Label fx:id="descriptionLabel" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+        <TextArea fx:id="descriptionTextArea" prefWidth="320" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+
+        <Label fx:id="imageLabel" prefHeight="30" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+        <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="15">
+            <RadioButton fx:id="httpImageRadioButton" onAction="#imageSourceChosen"/>
+            <Label prefWidth="50"/>
+            <RadioButton fx:id="localImageRadioButton" onAction="#imageSourceChosen"/>
+        </HBox>
+        <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="16">
+            <TextField fx:id="imageTextField" prefWidth="200" onKeyPressed="#keyPressedOnTextField"/>
+            <Button fx:id="imageBrowseButton" onAction="#browsePressed"/>
+        </HBox>
+
+        <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="18">
+            <Button fx:id="addTourButton" onAction="#addTourPressed" />
+        </HBox>
+
+        <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="19">
+            <Text fx:id="addTourStatus" />
+        </HBox>
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints prefHeight="30.0"/>
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
+    </GridPane>
+</StackPane>

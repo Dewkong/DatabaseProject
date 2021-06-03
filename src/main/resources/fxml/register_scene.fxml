@@ -45,26 +45,26 @@
         <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="18">
             <Text fx:id="registrationStatus"/>
         </HBox>
-      <rowConstraints>
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints prefHeight="30.0" />
-         <RowConstraints />
-         <RowConstraints />
-      </rowConstraints>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints prefHeight="30.0" />
+            <RowConstraints />
+            <RowConstraints />
+        </rowConstraints>
     </GridPane>
 </StackPane>

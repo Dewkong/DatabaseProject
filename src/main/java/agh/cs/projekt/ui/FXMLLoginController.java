@@ -58,7 +58,6 @@ public class FXMLLoginController implements Initializable {
         login();
     }
 
-    //TODO make it actually log you in
     private void login() throws IOException {
         loginStatus.setText("");
         loginStatus.setTextFill(Paint.valueOf("black"));
@@ -96,7 +95,6 @@ public class FXMLLoginController implements Initializable {
                     session.getTransaction().commit();
                 }
             }
-            //session.getTransaction().commit();
         }
     }
 

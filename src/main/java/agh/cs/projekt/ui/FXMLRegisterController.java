@@ -116,20 +116,20 @@ public class FXMLRegisterController implements Initializable {
                 if(resultList.size() == 0) {
                     session.save(newCustomer);
                     session.save(newApplicationUser);
+                    session.getTransaction().commit();
+                    NavigationService.getInstance().goBack();
                 }
                 else {
                     session.getTransaction().rollback();
                     registrationStatus.setText("Rejestracja nieudana - uzytkownik o tym loginie juz istnieje.");
                     registrationStatus.setFill(Paint.valueOf("red"));
-                    return;
                 }
-                session.getTransaction().commit();
             }
         }
     }
 
     private String getInvalidData(Customer customer, ApplicationUser user) {
-        String invalidData = "";
+        StringBuilder invalidData = new StringBuilder();
         int invalidCount = 0;
 
         List<List<String>> dataToCheck = new ArrayList<>();
@@ -142,14 +142,14 @@ public class FXMLRegisterController implements Initializable {
         for(List<String> data : dataToCheck) {
             if(!data.get(0).matches(data.get(1))) {
                 if(invalidCount >= 1) {
-                    invalidData += ", ";
+                    invalidData.append(", ");
                 }
-                invalidData += data.get(2);
+                invalidData.append(data.get(2));
                 invalidCount += 1;
             }
         }
 
-        return invalidData;
+        return invalidData.toString();
     }
 
     public void keyPressedOnTextField(KeyEvent keyEvent) {
