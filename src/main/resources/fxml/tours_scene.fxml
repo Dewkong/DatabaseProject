@@ -71,7 +71,7 @@
             <children>
                <HBox prefHeight="35.0" prefWidth="200.0">
                   <children>
-                     <Button fx:id="testButton" onAction="#testTour" prefHeight="25.0">
+                     <Button fx:id="resetButton" onAction="#resetFilters" prefHeight="25.0">
                         <HBox.margin>
                            <Insets right="5.0" top="5.0" />
                         </HBox.margin>

@@ -5,7 +5,6 @@ import agh.cs.projekt.services.DatabaseHolder;
 import agh.cs.projekt.services.NavigationService;
 import agh.cs.projekt.services.UserHolder;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,13 +15,11 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import javax.persistence.Query;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -39,13 +36,14 @@ public class FXMLToursController implements Initializable {
     @FXML
     private Button addButton;
     @FXML
-    private Button testButton;
+    private Button resetButton;
     @FXML
     private ChoiceBox<CountryEnum> countryBox;
 
     //cache
-    List<Tour> tours = null;
-    GridPane gridTours;
+    private List<Tour> allTours = null;
+    private List<Tour> tours = new ArrayList<>();
+    private GridPane gridTours;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -57,7 +55,7 @@ public class FXMLToursController implements Initializable {
         logoutButton.setText("Wyloguj");
         addButton.setText("Dodaj wycieczke");
         addButton.setVisible(user.getRole() == RoleEnum.ADMIN);
-        testButton.setText("Test filtr");
+        resetButton.setText("Reset");
 
         gridTours = new GridPane();
         gridTours.setAlignment(Pos.TOP_CENTER);
@@ -73,7 +71,8 @@ public class FXMLToursController implements Initializable {
                     session.beginTransaction();
                     Query query_tours = session.createQuery("select T from Tour as T");
                     @SuppressWarnings("unchecked") List<Tour> result = query_tours.getResultList();
-                    tours = result;
+                    allTours = result;
+                    tours.addAll(allTours);
                     session.getTransaction().commit();
                 },
                 () -> Platform.runLater(this::loadToursUI)
@@ -136,9 +135,15 @@ public class FXMLToursController implements Initializable {
         }
     }
 
+    public void loadTours(){
+        loadToursUI();
+        tours.clear();
+        tours.addAll(allTours);
+    }
+
     public void refreshToursUI(){
         gridTours.getChildren().removeAll(gridTours.getChildren());
-        Platform.runLater(this::loadToursUI);
+        Platform.runLater(this::loadTours);
     }
 
     public void logout(ActionEvent actionEvent) {
@@ -149,8 +154,8 @@ public class FXMLToursController implements Initializable {
         NavigationService.getInstance().setScene("login_scene.fxml");
     }
 
-    public void testTour(ActionEvent actionEvent){
-        tours.removeIf(tour -> tour.getCountry() == CountryEnum.CANADA);
+    public void resetFilters(ActionEvent actionEvent){
+        countryBox.getSelectionModel().clearSelection();
         refreshToursUI();
     }
 
@@ -161,15 +166,7 @@ public class FXMLToursController implements Initializable {
 
     public void countryChosen(ActionEvent actionEvent){
         System.out.println(countryBox.getValue());
-        DatabaseHolder.getInstance().dbCallNonBlocking(
-                session -> {
-                    session.beginTransaction();
-                    Query query_tours = session.createQuery("select T from Tour as T");
-                    @SuppressWarnings("unchecked") List<Tour> result = query_tours.getResultList();
-                    tours = result;
-                    session.getTransaction().commit();
-                },
-                () -> Platform.runLater(this::filterCountries));
+        filterCountries();
     }
 
     public void addTour(ActionEvent actionEvent) throws IOException {
