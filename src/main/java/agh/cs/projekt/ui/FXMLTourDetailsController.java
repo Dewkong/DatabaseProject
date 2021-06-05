@@ -110,11 +110,6 @@ public class FXMLTourDetailsController implements Initializable {
     }
 
     //button callback
-    public void edit(ActionEvent actionEvent) {
-        System.out.println("edytuj wucieczke:\n" + this.tour.toString());
-    }
-
-    //button callback
     public void makeReservation(ActionEvent actionEvent) {
         Integer reservePlaces = showReservationAmountDialog();
         if (reservePlaces == null) return; //cancel reservation
