@@ -6,105 +6,87 @@
 <?import javafx.scene.layout.*?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.cs.projekt.ui.FXMLTourDetailsController">
-    <children>
-      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #dddddd;" GridPane.hgrow="NEVER">
-         <children>
+    <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #dddddd;" GridPane.hgrow="NEVER">
+        <HBox>
             <Button fx:id="return_button" mnemonicParsing="false" onAction="#goBack" text="Powrót">
-               <VBox.margin>
+               <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </VBox.margin>
+               </HBox.margin>
             </Button>
-                <ImageView fx:id="image_view" fitHeight="200.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
-               <viewport>
-                  <Rectangle2D />
-               </viewport></ImageView>
-                <HBox minHeight="0.0">
-               <children>
-                        <Label text="Nazwa wycieczki: " />
-                        <Label fx:id="tour_name" text="NAME" wrapText="true" />
-               </children>
-                </HBox>
-                <HBox>
-                    <children>
-                        <Label text="Kraj docelowy: " />
-                        <Label fx:id="tour_country" text="COUNTRY" wrapText="true" />
-                    </children>
-                </HBox>
-                 <HBox>
-                     <children>
-                         <Label text="Data: " />
-                         <Label fx:id="tour_date" text="DATE" wrapText="true" />
-                     </children>
-                 </HBox>
-                 <HBox>
-                     <children>
-                         <Label text="Opis: " />
-                         <Label fx:id="tour_description" text="DESCRIPTION" wrapText="true" />
-                     </children>
-                 </HBox>
-                 <HBox>
-                     <children>
-                         <Label text="Ocena: " />
-                         <Label fx:id="tour_rating" text="RATING" wrapText="true" />
-                     </children>
-                 </HBox>
-                 <HBox>
-                     <children>
-                         <Label text="Wolne miejsca: " />
-                         <Label fx:id="tour_places" text="PLACES" wrapText="true" />
-                     </children>
-                 </HBox>
-                 <HBox>
-                     <children>
-                         <Label text="Cena: " />
-                         <Label fx:id="tour_price" text="PRICE" wrapText="true" />
-                     </children>
-                 </HBox>
-         </children>
-      </VBox>
-      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
-         <children>
-            <Label fx:id="customer_loading" text="Ładowanie...">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </VBox.margin>
+            <Button fx:id="edit_button" mnemonicParsing="false" onAction="#edit" text="Edytuj szczegóły">
+                <HBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                </HBox.margin>
+            </Button>
+        </HBox>
+        <ImageView fx:id="image_view" fitHeight="200.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
+            <viewport>
+                <Rectangle2D />
+            </viewport>
+        </ImageView>
+        <HBox minHeight="0.0">
+            <Label text="Nazwa wycieczki: " />
+            <Label fx:id="tour_name" text="NAME" wrapText="true" />
+        </HBox>
+        <HBox>
+            <Label text="Kraj docelowy: " />
+            <Label fx:id="tour_country" text="COUNTRY" wrapText="true" />
+        </HBox>
+         <HBox>
+             <Label text="Data: " />
+             <Label fx:id="tour_date" text="DATE" wrapText="true" />
+         </HBox>
+         <HBox>
+             <Label text="Opis: " />
+             <Label fx:id="tour_description" text="DESCRIPTION" wrapText="true" />
+         </HBox>
+         <HBox>
+             <Label text="Ocena: " />
+             <Label fx:id="tour_rating" text="RATING" wrapText="true" />
+         </HBox>
+         <HBox>
+             <Label text="Wolne miejsca: " />
+             <Label fx:id="tour_places" text="PLACES" wrapText="true" />
+         </HBox>
+         <HBox>
+             <Label text="Cena: " />
+             <Label fx:id="tour_price" text="PRICE" wrapText="true" />
+         </HBox>
+    </VBox>
+    <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+        <Label fx:id="customer_loading" text="Ładowanie...">
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </VBox.margin>
+        </Label>
+        <HBox fx:id="hbox_customer_reservations">
+            <Label text="Twoje rezerwacje: " />
+            <Label fx:id="customer_reservations" text="CUSTOMER_RESERVATIONS" />
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </VBox.margin>
+        </HBox>
+        <HBox fx:id="hbox_reservation_controls" alignment="TOP_RIGHT" layoutX="10.0" layoutY="28.0">
+            <Button fx:id="button_make_reservation" mnemonicParsing="false" onAction="#makeReservation" text="Zarezerwuj miejsce">
+                <HBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                </HBox.margin>
+            </Button>
+            <Button fx:id="button_cancel_reservation" layoutX="15.0" layoutY="15.0" mnemonicParsing="false" onAction="#cancelReservation" text="Anuluj rezerwację">
+                <HBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                </HBox.margin>
+            </Button>
+        </HBox>
+        <HBox fx:id="hbox_rating_controls" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="64.0">
+            <Label text="Twoja ocena: ">
+                <HBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                </HBox.margin>
             </Label>
-            <HBox fx:id="hbox_customer_reservations">
-               <children>
-                  <Label text="Twoje rezerwacje: " />
-                  <Label fx:id="customer_reservations" text="CUSTOMER_RESERVATIONS" />
-               </children>
-               <VBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox fx:id="hbox_reservation_controls" alignment="TOP_RIGHT" layoutX="10.0" layoutY="28.0">
-               <children>
-                  <Button fx:id="button_make_reservation" mnemonicParsing="false" onAction="#makeReservation" text="Zarezerwuj miejsce">
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="button_cancel_reservation" layoutX="15.0" layoutY="15.0" mnemonicParsing="false" onAction="#cancelReservation" text="Anuluj rezerwację">
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin>
-                  </Button>
-               </children>
-            </HBox>
-            <HBox fx:id="hbox_rating_controls" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="64.0">
-               <children>
-                  <Label text="Twoja ocena: ">
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin>
-                  </Label>
-                  <ChoiceBox fx:id="customer_rating" prefWidth="150.0" />
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-    </children>
+            <ChoiceBox fx:id="customer_rating" prefWidth="150.0" />
+        </HBox>
+    </VBox>
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />

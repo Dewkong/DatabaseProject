@@ -1,9 +1,6 @@
 package agh.cs.projekt.ui;
 
-import agh.cs.projekt.models.Customer;
-import agh.cs.projekt.models.Rating;
-import agh.cs.projekt.models.Reservation;
-import agh.cs.projekt.models.Tour;
+import agh.cs.projekt.models.*;
 import agh.cs.projekt.services.DatabaseHolder;
 import agh.cs.projekt.services.NavigationService;
 import agh.cs.projekt.services.UserHolder;
@@ -61,6 +58,8 @@ public class FXMLTourDetailsController implements Initializable {
     public HBox hbox_rating_controls;
     @FXML
     public ChoiceBox<RatingEnum> customer_rating;
+    @FXML
+    public Button edit_button;
 
     //private caches
     private Tour tour = null;
@@ -76,6 +75,7 @@ public class FXMLTourDetailsController implements Initializable {
         for(RatingEnum option : RatingEnum.values()) {
             customer_rating.getItems().add(option);
         }
+        edit_button.setVisible(UserHolder.getInstance().getUser().getRole() == RoleEnum.ADMIN);
     }
 
     public void displayTour(Tour tour){
@@ -95,6 +95,10 @@ public class FXMLTourDetailsController implements Initializable {
         tour_date.setText(sdf.format(tour.getTourDate()));
         tour_price.setText(String.format("%.2f", tour.getPrice()) + "z\u0142"); // \u0142 - unicode for ł
 
+        edit_button.setOnAction(e -> NavigationService.getInstance().setScene(
+                "edit_tour_scene.fxml",
+                (FXMLEditTourController controller) -> controller.loadTour(tour)));
+
         updateReservationsUI();
 
         customer_rating.setOnAction(this::changeRating);
@@ -103,6 +107,11 @@ public class FXMLTourDetailsController implements Initializable {
     //button callback
     public void goBack(ActionEvent actionEvent) {
         NavigationService.getInstance().goBack();
+    }
+
+    //button callback
+    public void edit(ActionEvent actionEvent) {
+        System.out.println("edytuj wucieczke:\n" + this.tour.toString());
     }
 
     //button callback
