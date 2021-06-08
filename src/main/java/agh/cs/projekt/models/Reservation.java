@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 public class Reservation {
@@ -144,6 +145,28 @@ public class Reservation {
         }
     }
 
+    public float getCurrentlyPaidAmount() {
+        Session session = DatabaseHolder.getInstance().getSession();
+        session.beginTransaction();
+
+        System.out.println("tour_id: " + this.reservationID.getTourID());
+        System.out.println("customer_id: " + this.reservationID.getCustomerID());
+        BigDecimal currentlyPaidAmount = (BigDecimal) session.createNativeQuery(
+                "select CURRENTLY_PAID(:tour_id, :customer_id) from dual"
+        ).setParameter("tour_id", this.reservationID.getTourID())
+                .setParameter("customer_id", this.reservationID.getCustomerID())
+                .getSingleResult();
+        session.getTransaction().commit();
+        return currentlyPaidAmount.floatValue();
+    }
+
+    public float getTotalPrice() {
+        return this.getReservedPlaces() * this.getTour().getPrice();
+    }
+
+    public float getRemainingPayment() {
+        return this.getTotalPrice() - this.getCurrentlyPaidAmount();
+    }
 
     @Override
     public String toString() {

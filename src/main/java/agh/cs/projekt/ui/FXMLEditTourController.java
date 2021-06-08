@@ -8,6 +8,7 @@ import agh.cs.projekt.models.ImageSource.LocalImageSource;
 import agh.cs.projekt.models.Tour;
 import agh.cs.projekt.services.DatabaseHolder;
 import agh.cs.projekt.services.NavigationService;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,13 +22,11 @@ import javafx.stage.Window;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import javax.persistence.Query;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -109,6 +108,7 @@ public class FXMLEditTourController implements Initializable {
         imageChooser.setTitle("Wybierz zdjecie");
         imageChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("image", "*.jpg"));
         editTourButton.setText("Zapisz zmiany");
+        Platform.runLater(() -> nameTextField.requestFocus());
     }
 
     public void loadTour(Tour tour) {
@@ -178,26 +178,6 @@ public class FXMLEditTourController implements Initializable {
         }
         editTourStatus.setText("Zmiany zapisane");
         editTourStatus.setFill(Paint.valueOf("green"));
-
-        /*
-        DatabaseHolder databaseHolder = DatabaseHolder.getInstance();
-        try(Session session = databaseHolder.getSession()) {
-            session.beginTransaction();
-            Query query = session.createQuery("select T from Tour T where T.id = :tourID").setParameter("tourID", newTour.getId());
-            @SuppressWarnings("unchecked") List<Tour> resultList = query.getResultList();
-            if (resultList.size() == 0) {
-                session.save(newTour);
-                session.getTransaction().commit();
-                editTourStatus.setText("Zmiany zapisane");
-                editTourStatus.setFill(Paint.valueOf("green"));
-            }
-            else {
-                session.getTransaction().rollback();
-                editTourStatus.setText("Dodanie wycieczki nieudane - wycieczka o tym ID juz istnieje");
-                editTourStatus.setFill(Paint.valueOf("red"));
-            }
-        }
-        */
     }
 
     private String getInvalidData() {

@@ -22,7 +22,7 @@ public class Payment {
         //required by Hibernate
     }
 
-    public Payment(Customer customer, Reservation reservation, Date paymentDate, float amount) {
+    public Payment(Reservation reservation, Date paymentDate, float amount) {
         this.reservation = reservation;
         this.paymentDate = paymentDate;
         this.amount = amount;

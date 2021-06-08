@@ -6,6 +6,7 @@ import agh.cs.projekt.models.RoleEnum;
 import agh.cs.projekt.services.DatabaseHolder;
 import agh.cs.projekt.services.NavigationService;
 import agh.cs.projekt.utils.PasswordUtils;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -77,6 +78,7 @@ public class FXMLRegisterController implements Initializable {
         phoneLabel.setText("Numer telefonu:");
         emailLabel.setText("Adres e-mail:");
         registerButton.setText("Utworz konto");
+        Platform.runLater(() -> loginTextField.requestFocus());
     }
 
     public void goBack(ActionEvent actionEvent) throws IOException {
@@ -111,7 +113,7 @@ public class FXMLRegisterController implements Initializable {
             DatabaseHolder databaseHolder = DatabaseHolder.getInstance();
             try(Session session = databaseHolder.getSession()) {
                 session.beginTransaction();
-                Query query = session.createQuery("select AU from ApplicationUser AU where AU.login LIKE :userLogin").setParameter("userLogin", login);
+                Query query = session.createQuery("select AU from ApplicationUser AU where AU.login = :userLogin").setParameter("userLogin", login);
                 @SuppressWarnings("unchecked") List<ApplicationUser> resultList = query.getResultList();
                 if(resultList.size() == 0) {
                     session.save(newCustomer);

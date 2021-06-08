@@ -76,6 +76,7 @@ public class FXMLTourDetailsController implements Initializable {
             customer_rating.getItems().add(option);
         }
         edit_button.setVisible(UserHolder.getInstance().getUser().getRole() == RoleEnum.ADMIN);
+        Platform.runLater(() -> return_button.getParent().requestFocus());
     }
 
     public void displayTour(Tour tour){

@@ -8,6 +8,7 @@ import agh.cs.projekt.models.ImageSource.LocalImageSource;
 import agh.cs.projekt.models.Tour;
 import agh.cs.projekt.services.DatabaseHolder;
 import agh.cs.projekt.services.NavigationService;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -111,6 +112,7 @@ public class FXMLAddTourController implements Initializable {
         imageChooser.setTitle("Wybierz zdjecie");
         imageChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("image", "*.jpg"));
         addTourButton.setText("Dodaj wycieczke");
+        Platform.runLater(() -> nameTextField.requestFocus());
     }
 
     public void goBack(ActionEvent actionEvent) throws IOException {

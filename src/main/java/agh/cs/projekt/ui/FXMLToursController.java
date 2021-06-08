@@ -6,6 +6,7 @@ import agh.cs.projekt.models.Tour;
 import agh.cs.projekt.services.DatabaseHolder;
 import agh.cs.projekt.services.NavigationService;
 import agh.cs.projekt.services.UserHolder;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,6 +30,8 @@ public class FXMLToursController implements Initializable {
     @FXML
     private Label userLabel;
     @FXML
+    private Button reservationsButton;
+    @FXML
     private Button logoutButton;
     @FXML
     private Label titleLabel;
@@ -44,6 +47,7 @@ public class FXMLToursController implements Initializable {
         userLabel.setText("Zalogowano jako " + user.getLogin() + "#" + user.getCustomer().getId());
         titleLabel.setText("Wycieczki");
         titleLabel.setStyle("-fx-font-weight: bold");
+        reservationsButton.setText("Moje rezerwacje");
         logoutButton.setText("Wyloguj");
         addButton.setText("Dodaj wycieczke");
         addButton.setVisible(user.getRole() == RoleEnum.ADMIN);
@@ -120,6 +124,7 @@ public class FXMLToursController implements Initializable {
             }
             gridMain.add(gridTours, 0, 1);
         }
+        Platform.runLater(() -> titleLabel.getParent().requestFocus());
     }
 
     public void logout(ActionEvent actionEvent) {
@@ -132,5 +137,12 @@ public class FXMLToursController implements Initializable {
 
     public void addTour(ActionEvent actionEvent) throws IOException {
         NavigationService.getInstance().setScene("add_tour_scene.fxml");
+    }
+
+    public void showReservations(ActionEvent actionEvent) {
+        NavigationService.getInstance().setScene(
+                "reservations_scene.fxml",
+                (FXMLReservationsController controller) ->
+                        controller.loadReservations(UserHolder.getInstance().getUser().getCustomer()));
     }
 }
