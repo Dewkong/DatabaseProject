@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.util.converter.FloatStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
@@ -78,7 +79,20 @@ public class FXMLToursController implements Initializable {
         gridTours.setStyle("-fx-background-insets: 5px");
         gridTours.setVgap(10);
         gridTours.setHgap(10);
-        gridMain.add(gridTours, 0, 2);
+        VBox vbox = new VBox();
+        vbox.setAlignment(Pos.TOP_CENTER);
+
+        ScrollPane scrollTours = new ScrollPane();
+        scrollTours.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollTours.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollTours.setVmax(440);
+        scrollTours.setMinWidth(640);
+        scrollTours.setMaxWidth(640);
+        scrollTours.setStyle("-fx-padding: 0px"); //fixes a bug in JavaFX that causes text to be blurred inside of ScrollPane
+        scrollTours.setContent(gridTours);
+
+        vbox.getChildren().add(scrollTours);
+        gridMain.add(vbox, 0, 2);
 
         DatabaseHolder.getInstance().dbCallNonBlocking(
                 session -> {
