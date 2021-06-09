@@ -60,7 +60,7 @@
             </VBox.margin>
         </Label>
         <HBox fx:id="hbox_customer_reservations">
-            <Label text="Twoje rezerwacje: " />
+            <Label fx:id="customer_reservations_label" text="Twoje rezerwacje: " />
             <Label fx:id="customer_reservations" text="CUSTOMER_RESERVATIONS" />
             <VBox.margin>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
