@@ -10,15 +10,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.util.converter.FloatStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 
 import javax.persistence.Query;
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -38,7 +39,15 @@ public class FXMLToursController implements Initializable {
     @FXML
     private Button resetButton;
     @FXML
+    private Button filterButton;
+    @FXML
     private ChoiceBox<CountryEnum> countryBox;
+    @FXML
+    private TextField minPriceField;
+    @FXML
+    private TextField maxPriceField;
+    @FXML
+    private TextField availablePlacesField;
 
     //cache
     private List<Tour> allTours = null;
@@ -56,6 +65,11 @@ public class FXMLToursController implements Initializable {
         addButton.setText("Dodaj wycieczke");
         addButton.setVisible(user.getRole() == RoleEnum.ADMIN);
         resetButton.setText("Reset");
+        filterButton.setText("Filtruj");
+        countryBox.getItems().add(null);
+        minPriceField.setTextFormatter(new TextFormatter<>(new FloatStringConverter()));
+        maxPriceField.setTextFormatter(new TextFormatter<>(new FloatStringConverter()));
+        availablePlacesField.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
 
         gridTours = new GridPane();
         gridTours.setAlignment(Pos.TOP_CENTER);
@@ -84,7 +98,7 @@ public class FXMLToursController implements Initializable {
         for (Tour tour : tours) {
             GridPane gridTour = new GridPane();
             gridTour.setAlignment(Pos.CENTER);
-            gridTour.setStyle("-fx-background-color: teal");
+            gridTour.setStyle("-fx-background-color: #4477FF");
             gridTour.setPadding(new Insets(10, 10, 10, 10));
 
             Label labelName = new Label(tour.getName() + " : " + tour.getCountry());
@@ -92,12 +106,13 @@ public class FXMLToursController implements Initializable {
             labelName.setMinWidth(180);
             labelName.setMaxWidth(180);
             labelName.setMinHeight(40);
-            Label labelDate = new Label("Data: " + tour.getTourDate().toString());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            Label labelDate = new Label("Data: " + sdf.format(tour.getTourDate()));
             labelDate.setAlignment(Pos.CENTER);
             labelDate.setMinWidth(180);
             labelDate.setMaxWidth(180);
             labelDate.setMinHeight(40);
-            Label labelPrice = new Label("Cena: " + tour.getPrice());
+            Label labelPrice = new Label("Cena: " + String.format("%.2f", tour.getPrice()) + "z\u0142");
             labelPrice.setAlignment(Pos.CENTER);
             labelPrice.setMinWidth(180);
             labelPrice.setMaxWidth(180);
@@ -156,17 +171,38 @@ public class FXMLToursController implements Initializable {
 
     public void resetFilters(ActionEvent actionEvent){
         countryBox.getSelectionModel().clearSelection();
+        minPriceField.setText("");
+        maxPriceField.setText("");
+        availablePlacesField.setText("");
+        refreshToursUI();
+    }
+
+    public void applyFilters(ActionEvent actionEvent){
+        filterCountries();
+        filterPrices();
+        filterPlaces();
         refreshToursUI();
     }
 
     public void filterCountries(){
-        tours.removeIf(tour -> tour.getCountry() != countryBox.getValue());
-        refreshToursUI();
+        if (countryBox.getValue() != null){
+            tours.removeIf(tour -> tour.getCountry() != countryBox.getValue());
+        }
     }
 
-    public void countryChosen(ActionEvent actionEvent){
-        System.out.println(countryBox.getValue());
-        filterCountries();
+    public void filterPrices(){
+        if (!minPriceField.getText().equals("")){
+            tours.removeIf(tour -> tour.getPrice() < Float.parseFloat(minPriceField.getText()));
+        }
+        if (!maxPriceField.getText().equals("")){
+            tours.removeIf(tour -> tour.getPrice() > Float.parseFloat(maxPriceField.getText()));
+        }
+    }
+
+    public void filterPlaces(){
+        if (!availablePlacesField.getText().equals("")){
+            tours.removeIf(tour -> tour.getAvailablePlaces() < Float.parseFloat(availablePlacesField.getText()));
+        }
     }
 
     public void addTour(ActionEvent actionEvent) throws IOException {

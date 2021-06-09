@@ -71,16 +71,68 @@
             <children>
                <HBox prefHeight="35.0" prefWidth="200.0">
                   <children>
-                     <Button fx:id="resetButton" onAction="#resetFilters" prefHeight="25.0">
+                     <Button fx:id="filterButton" layoutX="10.0" layoutY="15.0" onAction="#applyFilters" prefHeight="25.0">
                         <HBox.margin>
                            <Insets right="5.0" top="5.0" />
                         </HBox.margin>
                      </Button>
-                     <ChoiceBox prefWidth="90.0" fx:id="countryBox" onAction="#countryChosen">
+                     <Button fx:id="resetButton" onAction="#resetFilters" prefHeight="25.0">
+                        <HBox.margin>
+                           <Insets right="10.0" top="5.0" />
+                        </HBox.margin>
+                     </Button>
+                     <Label prefHeight="25.0" text="Kraj:">
+                        <HBox.margin>
+                           <Insets top="5.0" />
+                        </HBox.margin>
+                        <font>
+                           <Font size="14.0" />
+                        </font>
+                     </Label>
+                     <ChoiceBox fx:id="countryBox" prefWidth="90.0">
                         <HBox.margin>
                            <Insets right="5.0" top="5.0" />
                         </HBox.margin>
                      </ChoiceBox>
+                     <Label layoutX="57.0" layoutY="15.0" prefHeight="25.0" text="Cena od:">
+                        <font>
+                           <Font size="14.0" />
+                        </font>
+                        <HBox.margin>
+                           <Insets top="5.0" />
+                        </HBox.margin>
+                     </Label>
+                     <TextField fx:id="minPriceField" prefHeight="25.0" prefWidth="60.0">
+                        <HBox.margin>
+                           <Insets right="5.0" top="5.0" />
+                        </HBox.margin>
+                     </TextField>
+                     <Label layoutX="180.0" layoutY="15.0" prefHeight="25.0" text="do:">
+                        <font>
+                           <Font size="14.0" />
+                        </font>
+                        <HBox.margin>
+                           <Insets top="5.0" />
+                        </HBox.margin>
+                     </Label>
+                     <TextField fx:id="maxPriceField" layoutX="234.0" layoutY="15.0" prefHeight="25.0" prefWidth="60.0">
+                        <HBox.margin>
+                           <Insets right="10.0" top="5.0" />
+                        </HBox.margin>
+                     </TextField>
+                     <Label layoutX="284.0" layoutY="15.0" prefHeight="25.0" text="Ilość miejsc:">
+                        <font>
+                           <Font size="14.0" />
+                        </font>
+                        <HBox.margin>
+                           <Insets top="5.0" />
+                        </HBox.margin>
+                     </Label>
+                     <TextField fx:id="availablePlacesField" layoutX="304.0" layoutY="15.0" prefHeight="25.0" prefWidth="40.0">
+                        <HBox.margin>
+                           <Insets top="5.0" />
+                        </HBox.margin>
+                     </TextField>
                   </children>
                   <VBox.margin>
                      <Insets left="20.0" right="20.0" />
