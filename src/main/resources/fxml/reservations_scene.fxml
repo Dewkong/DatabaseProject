@@ -21,7 +21,7 @@
                 <Button fx:id="logoutButton" onAction="#logout" />
             </HBox>
         </VBox>
-        <ScrollPane minWidth="630.0" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+        <ScrollPane fx:id="reservationsScrollPane" minWidth="630.0" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
             <GridPane fx:id="reservationsGrid" hgap="10" vgap="10" />
         </ScrollPane>
       <columnConstraints>
