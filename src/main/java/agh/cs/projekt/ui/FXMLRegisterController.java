@@ -6,6 +6,7 @@ import agh.cs.projekt.models.RoleEnum;
 import agh.cs.projekt.services.DatabaseHolder;
 import agh.cs.projekt.services.NavigationService;
 import agh.cs.projekt.utils.PasswordUtils;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -77,6 +78,7 @@ public class FXMLRegisterController implements Initializable {
         phoneLabel.setText("Numer telefonu:");
         emailLabel.setText("Adres e-mail:");
         registerButton.setText("Utworz konto");
+        Platform.runLater(() -> loginTextField.requestFocus());
     }
 
     public void goBack(ActionEvent actionEvent) throws IOException {
@@ -111,25 +113,25 @@ public class FXMLRegisterController implements Initializable {
             DatabaseHolder databaseHolder = DatabaseHolder.getInstance();
             try(Session session = databaseHolder.getSession()) {
                 session.beginTransaction();
-                Query query = session.createQuery("select AU from ApplicationUser AU where AU.login LIKE :userLogin").setParameter("userLogin", login);
+                Query query = session.createQuery("select AU from ApplicationUser AU where AU.login = :userLogin").setParameter("userLogin", login);
                 @SuppressWarnings("unchecked") List<ApplicationUser> resultList = query.getResultList();
                 if(resultList.size() == 0) {
                     session.save(newCustomer);
                     session.save(newApplicationUser);
+                    session.getTransaction().commit();
+                    NavigationService.getInstance().goBack();
                 }
                 else {
                     session.getTransaction().rollback();
                     registrationStatus.setText("Rejestracja nieudana - uzytkownik o tym loginie juz istnieje.");
                     registrationStatus.setFill(Paint.valueOf("red"));
-                    return;
                 }
-                session.getTransaction().commit();
             }
         }
     }
 
     private String getInvalidData(Customer customer, ApplicationUser user) {
-        String invalidData = "";
+        StringBuilder invalidData = new StringBuilder();
         int invalidCount = 0;
 
         List<List<String>> dataToCheck = new ArrayList<>();
@@ -142,14 +144,14 @@ public class FXMLRegisterController implements Initializable {
         for(List<String> data : dataToCheck) {
             if(!data.get(0).matches(data.get(1))) {
                 if(invalidCount >= 1) {
-                    invalidData += ", ";
+                    invalidData.append(", ");
                 }
-                invalidData += data.get(2);
+                invalidData.append(data.get(2));
                 invalidCount += 1;
             }
         }
 
-        return invalidData;
+        return invalidData.toString();
     }
 
     public void keyPressedOnTextField(KeyEvent keyEvent) {

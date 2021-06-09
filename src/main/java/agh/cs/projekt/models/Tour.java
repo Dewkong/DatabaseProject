@@ -38,7 +38,7 @@ public class Tour {
     @ManyToOne(cascade = CascadeType.ALL)
     private ImageSource image;
 
-    Tour(){
+    public Tour(){
         //required by Hibernate
     }
 

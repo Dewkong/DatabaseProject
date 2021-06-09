@@ -5,6 +5,7 @@ import agh.cs.projekt.services.DatabaseHolder;
 import agh.cs.projekt.services.NavigationService;
 import agh.cs.projekt.services.UserHolder;
 import agh.cs.projekt.utils.PasswordUtils;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -52,13 +53,13 @@ public class FXMLLoginController implements Initializable {
         loginButton.setText("Zaloguj sie");
         registerLabel.setText("Nie masz jeszcze konta?");
         registerButton.setText("Zarejestruj sie");
+        Platform.runLater(() -> loginTextField.requestFocus());
     }
 
     public void loginPressed(ActionEvent actionEvent) throws IOException {
         login();
     }
 
-    //TODO make it actually log you in
     private void login() throws IOException {
         loginStatus.setText("");
         loginStatus.setTextFill(Paint.valueOf("black"));
@@ -96,7 +97,6 @@ public class FXMLLoginController implements Initializable {
                     session.getTransaction().commit();
                 }
             }
-            //session.getTransaction().commit();
         }
     }
 

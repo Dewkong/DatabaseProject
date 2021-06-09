@@ -1,9 +1,6 @@
 package agh.cs.projekt.ui;
 
-import agh.cs.projekt.models.Customer;
-import agh.cs.projekt.models.Rating;
-import agh.cs.projekt.models.Reservation;
-import agh.cs.projekt.models.Tour;
+import agh.cs.projekt.models.*;
 import agh.cs.projekt.services.DatabaseHolder;
 import agh.cs.projekt.services.NavigationService;
 import agh.cs.projekt.services.UserHolder;
@@ -63,6 +60,8 @@ public class FXMLTourDetailsController implements Initializable {
     @FXML
     public ChoiceBox<RatingEnum> customer_rating;
     @FXML
+    public Button edit_button;
+    @FXML
     public Label customer_reservations_label;
 
     //private caches
@@ -79,6 +78,8 @@ public class FXMLTourDetailsController implements Initializable {
         for(RatingEnum option : RatingEnum.values()) {
             customer_rating.getItems().add(option);
         }
+        edit_button.setVisible(UserHolder.getInstance().getUser().getRole() == RoleEnum.ADMIN);
+        Platform.runLater(() -> return_button.getParent().requestFocus());
     }
 
     public void displayTour(Tour tour){
@@ -97,6 +98,10 @@ public class FXMLTourDetailsController implements Initializable {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         tour_date.setText(sdf.format(tour.getTourDate()));
         tour_price.setText(String.format("%.2f", tour.getPrice()) + "z\u0142"); // \u0142 - unicode for ł
+
+        edit_button.setOnAction(e -> NavigationService.getInstance().setScene(
+                "edit_tour_scene.fxml",
+                (FXMLEditTourController controller) -> controller.loadTour(tour)));
 
         updateReservationsUI();
 

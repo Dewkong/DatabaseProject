@@ -30,7 +30,8 @@
                         <Insets />
                      </VBox.margin>
                   </Label>
-                    <HBox alignment="TOP_RIGHT">
+                    <HBox alignment="TOP_RIGHT" spacing="5">
+                        <Button fx:id="reservationsButton" onAction="#showReservations"/>
                         <Button fx:id="logoutButton" onAction="#logout" />
                      <opaqueInsets>
                         <Insets />
