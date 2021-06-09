@@ -39,9 +39,9 @@
                  <HBox>
                      <children>
                          <Label text="Opis: " />
-                         <Label fx:id="tour_description" text="DESCRIPTION" wrapText="true" />
                      </children>
                  </HBox>
+                   <Label fx:id="tour_description" text="DESCRIPTION" wrapText="true" />
                  <HBox>
                      <children>
                          <Label text="Ocena: " />
@@ -71,7 +71,7 @@
             </Label>
             <HBox fx:id="hbox_customer_reservations">
                <children>
-                  <Label text="Twoje rezerwacje: " />
+                  <Label fx:id="customer_reservations_label" text="Miejsca zarezerwowane prze Ciebie: " />
                   <Label fx:id="customer_reservations" text="CUSTOMER_RESERVATIONS" />
                </children>
                <VBox.margin>

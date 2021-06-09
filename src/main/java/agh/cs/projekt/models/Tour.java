@@ -1,16 +1,14 @@
 package agh.cs.projekt.models;
 
-import agh.cs.projekt.services.DatabaseHolder;
 import agh.cs.projekt.models.ImageSource.ImageSource;
+import agh.cs.projekt.services.DatabaseHolder;
 import javafx.util.Pair;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.util.List;
 
 @Entity
 public class Tour {

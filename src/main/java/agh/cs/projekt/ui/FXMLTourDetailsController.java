@@ -21,6 +21,7 @@ import javafx.util.Pair;
 import org.hibernate.Transaction;
 
 import java.net.URL;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -61,6 +62,8 @@ public class FXMLTourDetailsController implements Initializable {
     public HBox hbox_rating_controls;
     @FXML
     public ChoiceBox<RatingEnum> customer_rating;
+    @FXML
+    public Label customer_reservations_label;
 
     //private caches
     private Tour tour = null;
@@ -256,22 +259,36 @@ public class FXMLTourDetailsController implements Initializable {
             customer_loading.setManaged(true);
         }
 
-        if (reservationsReady){
+        if (reservationsReady && tour.getTourDate().after(new Date(System.currentTimeMillis()))){
+            //reservations fetched, and tour hasn't happened yet
             hbox_reservation_controls.setVisible(true);
             hbox_reservation_controls.setManaged(true);
             hbox_customer_reservations.setVisible(true);
             hbox_customer_reservations.setManaged(true);
+        } else if (reservationsReady){
+            //reservations fetched but tour already happened
+            hbox_reservation_controls.setVisible(false);
+            hbox_reservation_controls.setManaged(false);
+            hbox_customer_reservations.setVisible(false);
+            hbox_customer_reservations.setManaged(false);
         } else {
+            //reservations not yet fetched (still loading)
             hbox_reservation_controls.setVisible(false);
             hbox_reservation_controls.setManaged(false);
             hbox_customer_reservations.setVisible(false);
             hbox_customer_reservations.setManaged(false);
         }
 
-        if (ratingsReady){
+        if (ratingsReady && reservation != null){
+            //ratings fetched and the user has a reservation
             hbox_rating_controls.setVisible(true);
             hbox_rating_controls.setManaged(true);
+        } else if (ratingsReady) {
+            //ratings fetched but the user doesn't have a reservation
+            hbox_rating_controls.setVisible(false);
+            hbox_rating_controls.setManaged(false);
         } else {
+            //ratings not yet fetched (still loading)
             hbox_rating_controls.setVisible(false);
             hbox_rating_controls.setManaged(false);
         }
@@ -293,6 +310,8 @@ public class FXMLTourDetailsController implements Initializable {
     //must be run on the FX Thread
     private void setCustomerNoReservation(){
         customer_reservations.setText("Nie masz jeszcze rezerwacji"); // \u0142 - unicode for ł \u0105 - unicode for ą
+        customer_reservations_label.setVisible(false);
+        customer_reservations_label.setManaged(false);
         button_cancel_reservation.setDisable(true);
         button_make_reservation.setDisable(false);
     }
@@ -300,6 +319,8 @@ public class FXMLTourDetailsController implements Initializable {
     //must be run on the FX Thread
     private void setCustomerReservedPlaces(int reservedPlaces){
         customer_reservations.setText(String.format("%d", reservedPlaces));
+        customer_reservations_label.setVisible(true);
+        customer_reservations_label.setManaged(true);
         button_cancel_reservation.setDisable(false);
         button_make_reservation.setDisable(true);
     }

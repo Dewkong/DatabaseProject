@@ -1,12 +1,18 @@
 package agh.cs.projekt;
 
+import agh.cs.projekt.models.CountryEnum;
 import agh.cs.projekt.models.ImageSource.HttpImageSource;
+import agh.cs.projekt.models.Tour;
 import agh.cs.projekt.services.DatabaseHolder;
 import agh.cs.projekt.services.NavigationService;
 import agh.cs.projekt.services.UserHolder;
 import agh.cs.projekt.utils.ImageController;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import java.sql.Date;
 
 public class MainClass extends Application {
 
