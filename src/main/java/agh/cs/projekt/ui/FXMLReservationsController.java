@@ -40,6 +40,8 @@ public class FXMLReservationsController implements Initializable {
     @FXML
     private Label userLabel;
     @FXML
+    private ScrollPane reservationsScrollPane;
+    @FXML
     private GridPane reservationsGrid;
 
     private Customer customer = null;
@@ -53,6 +55,7 @@ public class FXMLReservationsController implements Initializable {
         logoutButton.setText("Wyloguj");
         ApplicationUser user = UserHolder.getInstance().getUser();
         userLabel.setText("Zalogowano jako " + user.getLogin() + "#" + user.getCustomer().getId());
+        reservationsScrollPane.setStyle("-fx-padding: 0px");
         Platform.runLater(() -> titleLabel.getParent().requestFocus());
     }
 
