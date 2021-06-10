@@ -9,7 +9,6 @@
         <property name="hibernate.connection.username">BD_PALCZAK</property>
         <property name="hibernate.connection.password">GrzcbenelCnffjbeq123</property>
         <property name="hibernate.show_sql">true</property>
-        <!-- TODO na razie niszczymy bazę przy każdym uruchomieniu, ostatecznie trzeba zmienić create na update ~W -->
         <property name="hibernate.hbm2ddl.auto">update</property>
 
 
