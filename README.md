@@ -12,6 +12,11 @@ Realizowana funkcjonalność:
 -rezerwowanie wycieczek przez użytkowników  
 -ocenianie wycieczek przez użytkowników  
 
+## Dane logowania
+Poniżej udostępniamy dane logowania, których można użyć, aby korzystać z aplikacji:  
+login: admin, hasło: admin - konto z uprawnieniami administratora  
+login: Login1, hasło: password - konto bez specjalnych uprawnień  
+
 ## Dokumentacja  
 Dokumentacja zamieszczona jest w pliku "Dokumentacja.pdf" znajdującym się w głównym katalogu tego repozytorium.  
 Jest również dostępna jako google doc pod adresem:
